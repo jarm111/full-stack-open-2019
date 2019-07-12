@@ -1,0 +1,23 @@
+note over selain:
+käyttäjä kirjoittaa tekstikenttään jotain
+ja painaa tallenna-nappia
+end note
+
+note over selain:
+selain lähettää tiedon palvelimelle, päivittää muistiinpanon listaan
+ja piirtää ruudun uudelleen
+end note
+
+selain->palvelin: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+
+note over palvelin:
+palvelin ottaa vastaan selaimen lähettämän datan, 
+lisää sen taulukkoon,
+ja palauttaa json-muotoisena vastauksena uuden merkinnän sisällön
+end note
+
+palvelin-->selain: 201 Created, {content: "foo", date: "2019-07-12"}
+
+note over selain:
+sivua ei ladata uudelleen
+end note
