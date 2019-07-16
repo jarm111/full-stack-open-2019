@@ -4,16 +4,26 @@ import ReactDOM from 'react-dom'
 const Statistics = ({stats}) => {
   const {good, neutral, bad} = stats
   const all = good + neutral + bad
+  let content
+
+  if (all === 0) {
+    content = <div>No feedback given</div>
+  } else {
+    content = 
+      <>
+        <div>good {good}</div>
+        <div>neutral {neutral}</div>
+        <div>bad {bad}</div>
+        <div>all {all}</div>
+        <div>average {all === 0 ? 0 : (good * 1 + bad * -1) / all}</div>
+        <div>positive {all === 0 ? 0 : good / all * 100} %</div>
+      </>
+  }
 
   return (
     <>
-      <h1>statistics</h1>
-      <div>good {good}</div>
-      <div>neutral {neutral}</div>
-      <div>bad {bad}</div>
-      <div>all {all}</div>
-      <div>average {all === 0 ? 0 : (good * 1 + bad * -1) / all}</div>
-      <div>positive {all === 0 ? 0 : good / all * 100} %</div>
+    <h1>statistics</h1>
+    {content}
     </>
   )
 }
