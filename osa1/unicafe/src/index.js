@@ -2,7 +2,10 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
 const Statistic = ({text, value}) => (
-  <div>{text} {value}</div>
+  <tr>
+    <td>{text}</td>
+    <td>{value}</td>
+  </tr>
 )
 
 const Button = ({onClick, text}) => (
@@ -16,14 +19,16 @@ const Statistics = ({stats}) => {
   if (all === 0) return <div>No feedback given</div>
 
   return (
-    <div>
-      <Statistic text="good" value={good}/>
-      <Statistic text="neutral" value={neutral}/>
-      <Statistic text="bad" value={bad}/>
-      <Statistic text="all" value={all}/>
-      <Statistic text="average" value={(good * 1 + bad * -1) / all}/>
-      <Statistic text="positive" value={(good / all * 100) + ' %'}/>
-    </div>
+    <table>
+      <tbody>
+        <Statistic text="good" value={good}/>
+        <Statistic text="neutral" value={neutral}/>
+        <Statistic text="bad" value={bad}/>
+        <Statistic text="all" value={all}/>
+        <Statistic text="average" value={(good * 1 + bad * -1) / all}/>
+        <Statistic text="positive" value={(good / all * 100) + ' %'}/>
+      </tbody>
+    </table>
   )
 }
 
