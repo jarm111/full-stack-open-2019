@@ -22,20 +22,25 @@ const App = ({anecdotes}) => {
     return random
   }
 
+  const getMaxElementIndex = (arr) => arr.indexOf(Math.max(...arr))
+
   const handleVoteClick = () => {
     const clone = Array.from(votes)
     clone[selected] +=1
     return setVotes(clone)
   }
-  
+
   const handleNextClick = () => setSelected(getDifferentRandom(selected, 0, anecdotes.length -1))
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <div>{anecdotes[selected]}</div>
       <div>{`has ${votes[selected]} votes`}</div>
       <button onClick={handleVoteClick}>vote</button>
       <button onClick={handleNextClick}>next anecdote</button>
+      <h1>Anecdote with most votes</h1>
+      <div>{anecdotes[getMaxElementIndex(votes)]}</div>
     </div>
   )
 }
