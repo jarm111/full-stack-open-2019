@@ -1,35 +1,33 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+const Statistic = ({text, value}) => (
+  <div>{text} {value}</div>
+)
+
+const Button = ({onClick, text}) => (
+  <button onClick={onClick}>{text}</button>
+)
+
 const Statistics = ({stats}) => {
   const {good, neutral, bad} = stats
   const all = good + neutral + bad
-  let content
 
-  if (all === 0) {
-    content = <div>No feedback given</div>
-  } else {
-    content = 
-      <>
-        <div>good {good}</div>
-        <div>neutral {neutral}</div>
-        <div>bad {bad}</div>
-        <div>all {all}</div>
-        <div>average {all === 0 ? 0 : (good * 1 + bad * -1) / all}</div>
-        <div>positive {all === 0 ? 0 : good / all * 100} %</div>
-      </>
-  }
+  if (all === 0) return <div>No feedback given</div>
 
   return (
-    <>
-    <h1>statistics</h1>
-    {content}
-    </>
+    <div>
+      <Statistic text="good" value={good}/>
+      <Statistic text="neutral" value={neutral}/>
+      <Statistic text="bad" value={bad}/>
+      <Statistic text="all" value={all}/>
+      <Statistic text="average" value={(good * 1 + bad * -1) / all}/>
+      <Statistic text="positive" value={(good / all * 100) + ' %'}/>
+    </div>
   )
 }
 
 const App = () => {
-  // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
@@ -37,9 +35,10 @@ const App = () => {
   return (
     <div>
       <h1>give feedback</h1>
-      <button onClick={() => setGood(good + 1)}>good</button>
-      <button onClick={() => setNeutral(neutral + 1)}>neutral</button>
-      <button onClick={() => setBad(bad + 1)}>bad</button>
+      <Button onClick={() => setGood(good + 1)} text="good" />
+      <Button onClick={() => setNeutral(neutral + 1)} text="neutral" />
+      <Button onClick={() => setBad(bad + 1)} text="bad" />
+      <h1>statistics</h1>
       <Statistics stats={{good, neutral, bad}}/>
     </div>
   )
