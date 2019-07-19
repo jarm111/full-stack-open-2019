@@ -15,15 +15,26 @@ const Content = ({course}) => (
   </>
 )
 
-// const Total = (props) => (
-//   <p>Number of exercises {props.course.parts[0].exercises + props.course.parts[1].exercises + props.course.parts[2].exercises}</p>
-// )
+const Total = ({course}) => {
+  let total = 0;
+
+  for (let i = 0; i < course.parts.length; i++) {
+    total += course.parts[i].exercises
+  }
+
+  return (
+    <p>
+      <strong>total of exercises {total}</strong>
+    </p>
+  )
+}
 
 const Course = ({course}) => {
   return (
     <div>
       <Header course={course} />
       <Content course={course} />
+      <Total course={course}/>
     </div>
   )
 }
