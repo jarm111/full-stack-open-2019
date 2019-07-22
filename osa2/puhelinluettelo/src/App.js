@@ -7,9 +7,9 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
 
   const returnRows = () => persons.map(person => 
-    (<tr key={person.name}>
+    <tr key={person.name}>
       <td>{person.name}</td>
-    </tr>)
+    </tr>
   )
 
   const handleNameChange = (event) => {
@@ -18,7 +18,12 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    setPersons(persons.concat({name: newName}))
+
+    if (persons.some(p => p.name.toLowerCase() === newName.trim().toLowerCase())) {
+      return alert(`${newName} is already added to phonebook`)
+    }
+
+    setPersons(persons.concat({name: newName.trim()}))
     setNewName('')
   }
 
