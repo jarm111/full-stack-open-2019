@@ -4,7 +4,7 @@ const Person = ({person}) => {
   const {name, number} = person
   
   return (
-    <tr key={name}>
+    <tr>
       <td>{name}</td>
       <td>{number}</td>
     </tr>

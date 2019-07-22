@@ -7,7 +7,7 @@ const Persons = ({persons, nameFilter}) => {
       ? persons.filter(p => p.name.toLowerCase().includes(nameFilter.toLowerCase()))
       : persons
 
-    return personsToShow.map(person => <Person person={person} />)
+    return personsToShow.map(person => <Person key={person.name} person={person} />)
   }
 
   return (
