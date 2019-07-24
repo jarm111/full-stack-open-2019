@@ -20,10 +20,14 @@ function App() {
     setFilter(event.target.value.trim())
   }
 
+  const handleShow = (name) => {
+    setFilter(name)
+  }
+
   return (
     <div>
       <Filter value={filter} onChange={handleFilter} />
-      <Results filter={filter} countries={countries} />
+      <Results filter={filter} countries={countries} onShow={handleShow}/>
     </div>
   )
 }
