@@ -11,24 +11,22 @@ const App = () => {
   const [ nameFilter, setnameFilter ] = useState('')
 
   useEffect(() => {
-    personsService.getPersons()
+    personsService.getAll()
       .then(persons => {
         setPersons(persons)
       })
   }, [])
 
-  const handleNameFilterChange = event => setnameFilter(event.target.value)
-  const handleNameChange = event => setNewName(event.target.value)
-  const handleNumberChange = event => setNewNumber(event.target.value)
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-
-    if (persons.some(p => p.name.toLowerCase() === newName.trim().toLowerCase())) {
-      return alert(`${newName} is already added to phonebook`)
+  const updatePerson = personToUpdate => {
+    if (window.confirm(`${personToUpdate.name} is already added to phonebook, replace the old number with a new one?`)) {
+      const updatedPerson = {...personToUpdate, number: newNumber}
+      personsService.update(personToUpdate.id, updatedPerson)
+        .then(person => setPersons(persons.map(p => p.id !== person.id ? p : person)))
     }
+  }
 
-    personsService.createPerson({name: newName.trim(), number: newNumber.trim()})
+  const addNewPerson = () => {
+    personsService.create({name: newName.trim(), number: newNumber.trim()})
       .then(person => {
         setPersons(persons.concat(person))
       })
@@ -36,14 +34,25 @@ const App = () => {
     setNewNumber('')
   }
 
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const matchPerson = persons.find(p => p.name.toLowerCase() === newName.trim().toLowerCase())
+
+    matchPerson !== undefined ? updatePerson(matchPerson) : addNewPerson()
+  }
+
   const handleRemovePerson = id => {
     const name = persons.find(p => p.id === id).name
 
     if (window.confirm(`Delete ${name} ?`)) {
-      personsService.deletePerson(id)
+      personsService.remove(id)
         .then(() => setPersons(persons.filter(p => p.id !== id)))
     }
   }
+
+  const handleNameFilterChange = event => setnameFilter(event.target.value)
+  const handleNameChange = event => setNewName(event.target.value)
+  const handleNumberChange = event => setNewNumber(event.target.value)
 
   return (
     <div>
