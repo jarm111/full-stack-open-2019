@@ -10,7 +10,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ nameFilter, setnameFilter ] = useState('')
 
-  const fetchData = () => {
+  const getPersons = () => {
     axios
       .get('http://localhost:3001/persons')
       .then(res => {
@@ -18,7 +18,15 @@ const App = () => {
       })
   }
 
-  useEffect(fetchData, [])
+  useEffect(getPersons, [])
+
+  const createPerson = (newPerson) => {
+    axios
+      .post('http://localhost:3001/persons', newPerson)
+      .then(res => {
+        setPersons(persons.concat(res.data))
+      })
+  }
 
   const handleNameFilterChange = event => setnameFilter(event.target.value)
   const handleNameChange = event => setNewName(event.target.value)
@@ -31,7 +39,7 @@ const App = () => {
       return alert(`${newName} is already added to phonebook`)
     }
 
-    setPersons(persons.concat({name: newName.trim(), number: newNumber.trim()}))
+    createPerson({name: newName.trim(), number: newNumber.trim()})
     setNewName('')
     setNewNumber('')
   }
