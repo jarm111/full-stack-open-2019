@@ -39,6 +39,10 @@ const App = () => {
         .then(person => {
           showNotification(`Updated ${person.name}'s number`, 'success')
         })
+        .catch(error => {
+          showNotification(`Information of ${personToUpdate.name} has already been removed from the server`, 'error')
+          setPersons(persons.filter(p => p.id !== personToUpdate.id))
+        })
     }
   }
 
@@ -72,6 +76,10 @@ const App = () => {
         })
         .then(() => {
           showNotification(`Removed ${name}`, 'success')
+        })
+        .catch(error => {
+          showNotification(`Information of ${name} has already been removed from the server`, 'error')
+          setPersons(persons.filter(p => p.id !== id))
         })
     }
   }
