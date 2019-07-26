@@ -3,12 +3,15 @@ import Filter from './Filter'
 import PersonForm from './PersonForm'
 import Persons from './Persons'
 import personsService from './services/persons'
+import Notification from './Notification'
 
 const App = () => {
   const [ persons, setPersons] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ nameFilter, setnameFilter ] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState(null)
+  const [notificationType, setNotificationType] = useState('success')
 
   useEffect(() => {
     personsService.getAll()
@@ -17,11 +20,25 @@ const App = () => {
       })
   }, [])
 
+  const showNotification = (message, type) => {
+    setNotificationMessage(message)
+    setNotificationType(type)
+    setTimeout(() => {
+      setNotificationMessage(null)
+    }, 5000)
+  }
+
   const updatePerson = personToUpdate => {
     if (window.confirm(`${personToUpdate.name} is already added to phonebook, replace the old number with a new one?`)) {
       const updatedPerson = {...personToUpdate, number: newNumber}
       personsService.update(personToUpdate.id, updatedPerson)
-        .then(person => setPersons(persons.map(p => p.id !== person.id ? p : person)))
+        .then(person => {
+          setPersons(persons.map(p => p.id !== person.id ? p : person))
+          return person
+        })
+        .then(person => {
+          showNotification(`Updated ${person.name}'s number`, 'success')
+        })
     }
   }
 
@@ -29,6 +46,10 @@ const App = () => {
     personsService.create({name: newName.trim(), number: newNumber.trim()})
       .then(person => {
         setPersons(persons.concat(person))
+        return person
+      })
+      .then(person => {
+        showNotification(`Added ${person.name}`, 'success')
       })
     setNewName('')
     setNewNumber('')
@@ -46,7 +67,12 @@ const App = () => {
 
     if (window.confirm(`Delete ${name} ?`)) {
       personsService.remove(id)
-        .then(() => setPersons(persons.filter(p => p.id !== id)))
+        .then(() => {
+          setPersons(persons.filter(p => p.id !== id))
+        })
+        .then(() => {
+          showNotification(`Removed ${name}`, 'success')
+        })
     }
   }
 
@@ -57,6 +83,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={notificationMessage} type={notificationType}/>
       <Filter value={nameFilter} onChange={handleNameFilterChange} />
       <h2>add a new</h2>
       <PersonForm onSubmit={handleSubmit} name={newName} onNameChange={handleNameChange} number={newNumber} onNumberChange={handleNumberChange} />
