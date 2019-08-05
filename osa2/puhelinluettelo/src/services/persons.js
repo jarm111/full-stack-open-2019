@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUri = 'http://localhost:3001/api/persons/'
+const baseUri = '/api/persons'
 
 const getAll = () => {
   return axios
@@ -16,12 +16,12 @@ const create = (newPerson) => {
 
 const remove = (id) => {
   return axios
-    .delete(`${baseUri}${id}`)
+    .delete(`${baseUri}/${id}`)
 }
 
 const update = (id, changedPerson) => {
   return axios
-    .put(`${baseUri}${id}`, changedPerson)
+    .put(`${baseUri}/${id}`, changedPerson)
     .then(res => res.data)
 }
 
