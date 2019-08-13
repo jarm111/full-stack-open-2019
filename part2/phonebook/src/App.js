@@ -55,6 +55,10 @@ const App = () => {
       .then(person => {
         showNotification(`Added ${person.name}`, 'success')
       })
+      .catch(error => {
+        const errorMessage = error.response.data.error
+        showNotification(errorMessage, 'error')
+      })
     setNewName('')
     setNewNumber('')
   }
