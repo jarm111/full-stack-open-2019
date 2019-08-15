@@ -1,0 +1,8 @@
+const listHelper = require('../utils/list-helper')
+
+test('dummy return one', () => {
+  const blogs = []
+
+  const result = listHelper.dummy(blogs)
+  expect(result).toBe(1)
+})
