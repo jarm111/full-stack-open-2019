@@ -4,10 +4,13 @@ const unknownEndpoint = (req, res) => {
   res.status(404).json({ error: 'requested resource cannot be found' })
 }
 
-const errorHandler = (error, request, response, next) => {
-  logger.error(error.message)
+const errorHandler = (err, req, res, next) => {
+  if (err.name === 'ValidationError') {
+    return res.status(400).json({ error: err.message })
+  }
 
-  next(error)
+  logger.error(err.message)
+  next(err)
 }
 
 module.exports = {

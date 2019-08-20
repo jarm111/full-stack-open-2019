@@ -75,12 +75,26 @@ describe('POST /api/blogs', () => {
   it('has the new blog with likes set to 0 when likes is not defined', async () => {
     await api
       .post('/api/blogs')
-      .send(helper.newBlogEntryWithoutLikesSet)
+      .send(helper.newBlogEntryWithoutLikes)
 
     const blogsAfterPost = await helper.blogsInDb()
-    const newBlog = blogsAfterPost.find(b => b.title === helper.newBlogEntryWithoutLikesSet.title)
+    const newBlog = blogsAfterPost.find(b => b.title === helper.newBlogEntryWithoutLikes.title)
 
     expect(newBlog.likes).toBe(0)
+  })
+
+  it('returns 400 bad request when author is not defined', async () => {
+    await api
+      .post('/api/blogs')
+      .send(helper.newBlogEntryWithoutAuthor)
+      .expect(400)
+  })
+
+  it('returns 400 bad request when title is not defined', async () => {
+    await api
+      .post('/api/blogs')
+      .send(helper.newBlogEntryWithoutTitle)
+      .expect(400)
   })
 })
 

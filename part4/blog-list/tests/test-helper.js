@@ -34,10 +34,22 @@ const newBlogEntry = {
   likes: 0,
 }
 
-const newBlogEntryWithoutLikesSet = {
+const newBlogEntryWithoutLikes = {
   title: 'Type wars',
   author: 'Robert C. Martin',
   url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+}
+
+const newBlogEntryWithoutTitle = {
+  author: 'Robert C. Martin',
+  url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+  likes: 0,
+}
+
+const newBlogEntryWithoutAuthor = {
+  title: 'Type wars',
+  url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+  likes: 0,
 }
 
 const blogsInDb = async () => {
@@ -48,5 +60,7 @@ module.exports = {
   initialBlogs,
   blogsInDb,
   newBlogEntry,
-  newBlogEntryWithoutLikesSet
+  newBlogEntryWithoutLikes,
+  newBlogEntryWithoutTitle,
+  newBlogEntryWithoutAuthor
 }
