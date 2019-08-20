@@ -71,6 +71,17 @@ describe('POST /api/blogs', () => {
 
     expect(titles).toContain(helper.newBlogEntry.title)
   })
+
+  it('has the new blog with likes set to 0 when likes is not defined', async () => {
+    await api
+      .post('/api/blogs')
+      .send(helper.newBlogEntryWithoutLikesSet)
+
+    const blogsAfterPost = await helper.blogsInDb()
+    const newBlog = blogsAfterPost.find(b => b.title === helper.newBlogEntryWithoutLikesSet.title)
+
+    expect(newBlog.likes).toBe(0)
+  })
 })
 
 afterAll(() => {

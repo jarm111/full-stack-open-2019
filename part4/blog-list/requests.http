@@ -9,5 +9,5 @@ Content-Type: application/json
   "title": "Joel On Software", 
   "author": "Joel Spolsky",
   "url": "https://www.joelonsoftware.com/",
-  "votes": 0
+  "likes": 0
 }

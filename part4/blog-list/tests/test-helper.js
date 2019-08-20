@@ -34,6 +34,12 @@ const newBlogEntry = {
   likes: 0,
 }
 
+const newBlogEntryWithoutLikesSet = {
+  title: 'Type wars',
+  author: 'Robert C. Martin',
+  url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+}
+
 const blogsInDb = async () => {
   return await Blog.find({})
 }
@@ -41,5 +47,6 @@ const blogsInDb = async () => {
 module.exports = {
   initialBlogs,
   blogsInDb,
-  newBlogEntry
+  newBlogEntry,
+  newBlogEntryWithoutLikesSet
 }
