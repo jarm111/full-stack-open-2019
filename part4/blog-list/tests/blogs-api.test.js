@@ -32,6 +32,14 @@ describe('GET /api/blogs', () => {
 
     expect(titles).toContain('Canonical string reduction')
   })
+
+  it('returns blogs with id field defined', async () => {
+    const response = await api.get('/api/blogs')
+
+    const blogs = response.body
+
+    blogs.forEach(b => expect(b.id).toBeDefined())
+  })
 })
 
 afterAll(() => {
