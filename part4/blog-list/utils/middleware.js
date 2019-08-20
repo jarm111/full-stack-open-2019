@@ -5,6 +5,10 @@ const unknownEndpoint = (req, res) => {
 }
 
 const errorHandler = (err, req, res, next) => {
+  if (err.name === 'CastError' && err.kind === 'ObjectId') {
+    return res.status(400).send({ error: 'id has invalid format' })
+  }
+
   if (err.name === 'ValidationError') {
     return res.status(400).json({ error: err.message })
   }

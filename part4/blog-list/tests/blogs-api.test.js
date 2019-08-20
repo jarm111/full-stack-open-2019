@@ -98,6 +98,31 @@ describe('POST /api/blogs', () => {
   })
 })
 
+describe('DELETE /api/blogs/:id', () => {
+  it('deletes the requested blog with valid id and returns status of 204', async () => {
+    const blogs = await helper.blogsInDb()
+    const blogToDelete = blogs[0]
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+
+    const blogsAfterDelete = await helper.blogsInDb()
+    const titlesAfterDelete = blogsAfterDelete.map(b => b.title)
+
+    expect(blogsAfterDelete.length).toBe(helper.initialBlogs.length - 1)
+    expect(titlesAfterDelete).not.toContain(blogToDelete.title)
+  })
+
+  it('returns status of 400 if id format is not valid', async () => {
+    const badId = '5d5be4ac80c3ff0f749c9fdf0987sdf8907'
+
+    await api
+      .delete(`/api/blogs/${badId}`)
+      .expect(400)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
