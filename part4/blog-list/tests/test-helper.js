@@ -27,11 +27,19 @@ const initialBlogs = [
   }
 ]
 
+const newBlogEntry = {
+  title: 'TDD harms architecture',
+  author: 'Robert C. Martin',
+  url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
+  likes: 0,
+}
+
 const blogsInDb = async () => {
   return await Blog.find({})
 }
 
 module.exports = {
   initialBlogs,
-  blogsInDb
+  blogsInDb,
+  newBlogEntry
 }

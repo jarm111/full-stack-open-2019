@@ -42,6 +42,37 @@ describe('GET /api/blogs', () => {
   })
 })
 
+describe('POST /api/blogs', () => {
+  it('returns added blog as json with status of 201', async () => {
+    await api
+      .post('/api/blogs')
+      .send(helper.newBlogEntry)
+      .expect(201)
+      .expect('Content-Type', /json/)
+  })
+
+  it('has number of blogs increased by one', async () => {
+    await api
+      .post('/api/blogs')
+      .send(helper.newBlogEntry)
+
+    const blogsAfterPost = await helper.blogsInDb()
+
+    expect(blogsAfterPost.length).toBe(helper.initialBlogs.length + 1)
+  })
+
+  it('contains the title of created blog', async () => {
+    await api
+      .post('/api/blogs')
+      .send(helper.newBlogEntry)
+
+    const blogsAfterPost = await helper.blogsInDb()
+    const titles = blogsAfterPost.map(b => b.title)
+
+    expect(titles).toContain(helper.newBlogEntry.title)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
