@@ -123,6 +123,41 @@ describe('DELETE /api/blogs/:id', () => {
   })
 })
 
+describe('PUT /api/blogs/:id', () => {
+  it('updates the requested blog with valid request', async () => {
+    const blogs = await helper.blogsInDb()
+    const blogToEdit = blogs[0]
+    const originalId = blogToEdit._id
+
+    const updatedBlog = {
+      ...blogToEdit.toJSON(),
+      likes: blogToEdit.likes + 10
+    }
+    delete updatedBlog.id
+
+    await api
+      .put(`/api/blogs/${originalId}`)
+      .send(updatedBlog)
+      .expect(200)
+      .expect('Content-Type', /json/)
+
+    const blogsAfterUpdate = await helper.blogsInDb()
+
+    const changedBlog = blogsAfterUpdate.find(b => b._id.equals(originalId))
+
+    expect(changedBlog.title).toBe(blogToEdit.title)
+    expect(changedBlog.likes).toBe(updatedBlog.likes)
+  })
+
+  it('returns status of 400 if id format is not valid', async () => {
+    const badId = 'asdf'
+    await api
+      .put(`/api/blogs/${badId}`)
+      .send({})
+      .expect(400)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })

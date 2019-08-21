@@ -1,9 +1,19 @@
-GET http://localhost:3003/api/blogs
+@hostname = localhost
+@port = 3003
+
+@apiPath = /api/blogs
+@baseUrl = {{hostname}}:{{port}}{{apiPath}}
+@contentType = application/json
 
 ###
 
-POST http://localhost:3003/api/blogs
-Content-Type: application/json
+GET http://{{baseUrl}}
+
+###
+
+# @name newBlog
+POST http://{{baseUrl}}
+Content-Type: {{contentType}}
 
 {
   "title": "Joel On Software", 
@@ -14,4 +24,16 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3003/api/blogs/5d5bdf9901242208c8884c56
+PUT http://{{baseUrl}}/{{newBlog.response.body.id}}
+Content-Type: {{contentType}}
+
+{
+  "title": "Joel On Software", 
+  "author": "Joel Spolsky",
+  "url": "https://www.joelonsoftware.com/",
+  "likes": 5
+}
+
+###
+
+DELETE http://{{baseUrl}}/{{newBlog.response.body.id}}
