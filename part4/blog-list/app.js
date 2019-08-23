@@ -11,7 +11,10 @@ const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
 const middleware = require('./utils/middleware')
 
-mongoose.connect(config.MONGODB_URL, { useNewUrlParser: true })
+mongoose.connect(config.MONGODB_URL, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+})
   .then(() => {
     logger.info('connected to MongoDB')
   })
