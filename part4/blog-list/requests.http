@@ -1,18 +1,18 @@
 @hostname = localhost
 @port = 3003
-
-@apiPath = /api/blogs
-@baseUrl = {{hostname}}:{{port}}{{apiPath}}
+@baseUrl = {{hostname}}:{{port}}
+@blogs = api/blogs
+@users = api/users
 @contentType = application/json
 
 ###
 
-GET http://{{baseUrl}}
+GET http://{{baseUrl}}/{{blogs}}
 
 ###
 
 # @name newBlog
-POST http://{{baseUrl}}
+POST http://{{baseUrl}}/{{blogs}}
 Content-Type: {{contentType}}
 
 {
@@ -24,7 +24,7 @@ Content-Type: {{contentType}}
 
 ###
 
-PUT http://{{baseUrl}}/{{newBlog.response.body.id}}
+PUT http://{{baseUrl}}/{{blogs}}/{{newBlog.response.body.id}}
 Content-Type: {{contentType}}
 
 {
@@ -36,4 +36,19 @@ Content-Type: {{contentType}}
 
 ###
 
-DELETE http://{{baseUrl}}/{{newBlog.response.body.id}}
+DELETE http://{{baseUrl}}/{{blogs}}/{{newBlog.response.body.id}}
+
+###
+
+GET http://{{baseUrl}}/{{users}}
+
+###
+
+POST http://{{baseUrl}}/{{users}}
+Content-Type: {{contentType}}
+
+{
+  "username": "tommy", 
+  "name": "Thomas Bailey",
+  "password": "p@ssW04D"
+}
