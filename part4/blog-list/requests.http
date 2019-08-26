@@ -15,6 +15,7 @@ GET http://{{baseUrl}}/{{blogs}}
 # @name newBlog
 POST http://{{baseUrl}}/{{blogs}}
 Content-Type: {{contentType}}
+Authorization: bearer {{loginUser.response.body.token}}
 
 {
   "title": "Joel On Software", 
