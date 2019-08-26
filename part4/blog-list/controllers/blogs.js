@@ -9,17 +9,10 @@ blogsRouter.get('/', async (req, res) => {
   res.json(blogs)
 })
 
-const extractToken = req => {
-  const authHeader = req.get('authorization')
-  if (authHeader && authHeader.toLowerCase().startsWith('bearer ')) {
-    return authHeader.substring(7)
-  }
-  return null
-}
-
 blogsRouter.post('/', async (req, res, next) => {
   const { title, author, url, likes } = req.body
-  const token = extractToken(req)
+  const token = req.token
+
   if (!token) return res.status(401).json({
     error: 'token is missing'
   })
