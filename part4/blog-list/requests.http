@@ -39,6 +39,7 @@ Content-Type: {{contentType}}
 ###
 
 DELETE http://{{baseUrl}}/{{blogs}}/{{newBlog.response.body.id}}
+Authorization: bearer {{loginUser.response.body.token}}
 
 ###
 

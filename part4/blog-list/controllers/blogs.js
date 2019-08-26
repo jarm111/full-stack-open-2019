@@ -40,8 +40,16 @@ blogsRouter.post('/', async (req, res, next) => {
 })
 
 blogsRouter.delete('/:id', async (req, res, next) => {
+  const id = req.params.id
+
   try {
-    const id = req.params.id
+    const decodedPayload = jwt.verify(req.token, config.SECRET)
+    const blog = await Blog.findById(id)
+    if (blog.user.toString() !== decodedPayload.id.toString()) {
+      return res.status(403).json({
+        error: 'user has no rights to delete the blog'
+      })
+    }
     await Blog.findByIdAndDelete(id)
     res.status(204).end()
   } catch(error) {
