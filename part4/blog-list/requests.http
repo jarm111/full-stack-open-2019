@@ -3,6 +3,7 @@
 @baseUrl = {{hostname}}:{{port}}
 @blogs = api/blogs
 @users = api/users
+@login = api/login
 @contentType = application/json
 
 ###
@@ -50,5 +51,17 @@ Content-Type: {{contentType}}
 {
   "username": "tommy", 
   "name": "Thomas Bailey",
+  "password": "p@ssW04D"
+}
+
+###
+
+# @name loginUser
+
+POST http://{{baseUrl}}/{{login}}
+Content-Type: {{contentType}}
+
+{
+  "username": "tommy",
   "password": "p@ssW04D"
 }
