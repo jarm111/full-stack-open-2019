@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import LoginForm from './components/LoginForm';
 import Blog from './components/Blog'
+import LogoutButton from './components/LogoutButton'
 import loginService from './services/login'
 import blogService from './services/blogs'
 
@@ -22,6 +23,13 @@ export default function App() {
 
     getBlogs()
   }, [])
+
+  useEffect(() => {
+    const persistentLogin = loginService.getPersistentLogin()
+    if (persistentLogin) {
+      setUser(persistentLogin)
+    }
+  }, [])
   
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -33,6 +41,11 @@ export default function App() {
     } catch(err) {
       console.error('Error', err)
     }
+  }
+
+  const handleLogout = () => {
+    setUser(null)
+    loginService.clearPersistentLogin()
   }
 
   const showLoginForm = () => (
@@ -48,7 +61,7 @@ export default function App() {
   const showBlogs = () => (
     <div>
       <h2>blogs</h2>
-      <p>{user.name} logged in</p>
+      <p>{user.name} logged in <LogoutButton onLogout={handleLogout} /></p>
       {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
     </div>
   )
