@@ -13,7 +13,6 @@ export default {
   getPersistentLogin: function() {
     const loggedUserJSON = window.localStorage.getItem('LoggedBloglistUser')
     if (loggedUserJSON) {
-      console.log(loggedUserJSON)
       return JSON.parse(loggedUserJSON)
     }
     return null

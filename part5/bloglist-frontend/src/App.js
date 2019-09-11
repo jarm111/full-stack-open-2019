@@ -1,28 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import LoginForm from './components/LoginForm';
 import Blog from './components/Blog'
 import LogoutButton from './components/LogoutButton'
 import loginService from './services/login'
 import blogService from './services/blogs'
+import AddBlogForm from './components/AddBlogForm';
 
 export default function App() {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
+  
+  const blogFormRef = useRef()
 
-  useEffect(() => {
-    async function getBlogs() {
+  const getBlogs = useCallback(
+    async () => {
       try {
         const res = await blogService.getAll()
         setBlogs(res)
       } catch(err) {
         console.error('Error', err)
       }
-    }
+    }, 
+    []
+  )
 
-    getBlogs()
-  }, [])
+  useEffect(() => { getBlogs() }, [getBlogs])
 
   useEffect(() => {
     const persistentLogin = loginService.getPersistentLogin()
@@ -31,12 +33,10 @@ export default function App() {
     }
   }, [])
   
-  const handleLogin = async (event) => {
+  const handleLogin = async (event, username, password) => {
     event.preventDefault()
     try {
       const user = await loginService.login({username, password})
-      setUsername('')
-      setPassword('')
       setUser(user)
     } catch(err) {
       console.error('Error', err)
@@ -48,14 +48,25 @@ export default function App() {
     loginService.clearPersistentLogin()
   }
 
+  const handleAddBlog = async (event, blog) => {
+    event.preventDefault()
+    try {
+      const created = await blogService.create(blog, user.token)
+      console.log('created', created)
+      getBlogs()
+      blogFormRef.current.resetFields()
+    } catch(err) {
+      console.error('Error', err)
+    }
+  }
+
   const showLoginForm = () => (
-    <LoginForm 
-        username={username} 
-        setUsername={setUsername} 
-        password={password} 
-        setPassword={setPassword} 
-        handleLogin={handleLogin}
+    <div>
+      <h2>log in to application</h2>
+      <LoginForm 
+          onLogin={handleLogin}
       />
+    </div>
   )
 
   const showBlogs = () => (
@@ -63,6 +74,8 @@ export default function App() {
       <h2>blogs</h2>
       <p>{user.name} logged in <LogoutButton onLogout={handleLogout} /></p>
       {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+      <h2>create new</h2>
+      <AddBlogForm ref={blogFormRef} onAddBlog={handleAddBlog} />
     </div>
   )
 
