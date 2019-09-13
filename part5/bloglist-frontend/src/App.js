@@ -5,11 +5,15 @@ import LogoutButton from './components/LogoutButton'
 import loginService from './services/login'
 import blogService from './services/blogs'
 import AddBlogForm from './components/AddBlogForm';
+import Notification from './components/Notification'
 
 export default function App() {
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
-  
+  const [notifMsg, setNotifMsg] = useState('')
+  const [notifType, setNotifType] = useState('info')
+  const [notifIsVisible, setNotifIsVisible] = useState(false)
+
   const blogFormRef = useRef()
 
   const getBlogs = useCallback(
@@ -18,7 +22,7 @@ export default function App() {
         const res = await blogService.getAll()
         setBlogs(res)
       } catch(err) {
-        console.error('Error', err)
+        notify(`${err}`, 'error')
       }
     }, 
     []
@@ -32,18 +36,33 @@ export default function App() {
       setUser(persistentLogin)
     }
   }, [])
+
+  const notify = (message, type) => {
+    setNotifMsg(message)
+    setNotifType(type)
+    setNotifIsVisible(true)
+    setTimeout(() => {
+      setNotifIsVisible(false)
+    }, 5000)
+  }
   
   const handleLogin = async (event, username, password) => {
     event.preventDefault()
     try {
       const user = await loginService.login({username, password})
       setUser(user)
+      notify(`${user.name} logged in`, 'info')
     } catch(err) {
-      console.error('Error', err)
+      if (err.response.status === 401) {
+        notify(`wrong username or password`, 'error')
+      } else {
+        notify(`${err}`, 'error')
+      }
     }
   }
 
   const handleLogout = () => {
+    notify(`${user.name} logged out`, 'info')
     setUser(null)
     loginService.clearPersistentLogin()
   }
@@ -52,17 +71,22 @@ export default function App() {
     event.preventDefault()
     try {
       const created = await blogService.create(blog, user.token)
-      console.log('created', created)
+      notify(`a new blog ${created.title} by ${created.author} added`, 'info')
       getBlogs()
       blogFormRef.current.resetFields()
     } catch(err) {
-      console.error('Error', err)
+      notify(`${err}`, 'error')
     }
   }
+
+  const showNotification = () => (
+    <Notification message={notifMsg} type={notifType} display={notifIsVisible}/>
+  )
 
   const showLoginForm = () => (
     <div>
       <h2>log in to application</h2>
+      {showNotification()}
       <LoginForm 
           onLogin={handleLogin}
       />
@@ -72,6 +96,7 @@ export default function App() {
   const showBlogs = () => (
     <div>
       <h2>blogs</h2>
+      {showNotification()}
       <p>{user.name} logged in <LogoutButton onLogout={handleLogout} /></p>
       {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
       <h2>create new</h2>
