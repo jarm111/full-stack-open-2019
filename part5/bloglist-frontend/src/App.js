@@ -82,6 +82,18 @@ export default function App() {
     }
   }
 
+  const handleLike = async (event, blog) => {
+    event.stopPropagation()
+    const updated = {...blog, likes: blog.likes + 1}
+    try {
+      const res = await blogService.update(updated, user.token)
+      notify(`liked ${res.title} by ${res.author}`, 'info')
+      getBlogs()
+    } catch(err) {
+      notify(`${err}`, 'error')
+    }
+  }
+
   const showNotification = () => (
     <Notification message={notifMsg} type={notifType} display={notifIsVisible}/>
   )
@@ -105,7 +117,7 @@ export default function App() {
         <h2>create new</h2>
         <AddBlogForm ref={blogFormRef} onAddBlog={handleAddBlog} />
       </Togglable>
-      {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+      {blogs.map(blog => <Blog key={blog.id} blog={blog} onLike={handleLike} />)}
     </div>
   )
 
