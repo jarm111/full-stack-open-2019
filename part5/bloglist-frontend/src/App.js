@@ -94,6 +94,18 @@ export default function App() {
     }
   }
 
+  const handleRemove = async (event, blog) => {
+    event.stopPropagation()
+    if (!window.confirm(`remove ${blog.title} by ${blog.author} ?`)) return
+    try {
+      await blogService.remove(blog, user.token)
+      notify(`removed ${blog.title} by ${blog.author}`, 'info')
+      getBlogs()
+    } catch(err) {
+      notify(`${err}`, 'error')
+    }
+  }
+
   const showNotification = () => (
     <Notification message={notifMsg} type={notifType} display={notifIsVisible}/>
   )
@@ -120,7 +132,7 @@ export default function App() {
           <h2>create new</h2>
           <AddBlogForm ref={blogFormRef} onAddBlog={handleAddBlog} />
         </Togglable>
-        {sortedBlogs.map(blog => <Blog key={blog.id} blog={blog} onLike={handleLike} />)}
+        {sortedBlogs.map(blog => <Blog key={blog.id} blog={blog} onLike={handleLike} onRemove={handleRemove}/>)}
       </div>
     )
   }
