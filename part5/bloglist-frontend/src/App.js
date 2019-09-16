@@ -6,6 +6,7 @@ import loginService from './services/login'
 import blogService from './services/blogs'
 import AddBlogForm from './components/AddBlogForm';
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 
 export default function App() {
   const [user, setUser] = useState(null)
@@ -15,6 +16,7 @@ export default function App() {
   const [notifIsVisible, setNotifIsVisible] = useState(false)
 
   const blogFormRef = useRef()
+  const blogFormToggleRef = useRef()
 
   const getBlogs = useCallback(
     async () => {
@@ -74,6 +76,7 @@ export default function App() {
       notify(`a new blog ${created.title} by ${created.author} added`, 'info')
       getBlogs()
       blogFormRef.current.resetFields()
+      blogFormToggleRef.current.toggleVisibility()
     } catch(err) {
       notify(`${err}`, 'error')
     }
@@ -98,9 +101,11 @@ export default function App() {
       <h2>blogs</h2>
       {showNotification()}
       <p>{user.name} logged in <LogoutButton onLogout={handleLogout} /></p>
+      <Togglable buttonLabel="new note" ref={blogFormToggleRef}>
+        <h2>create new</h2>
+        <AddBlogForm ref={blogFormRef} onAddBlog={handleAddBlog} />
+      </Togglable>
       {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
-      <h2>create new</h2>
-      <AddBlogForm ref={blogFormRef} onAddBlog={handleAddBlog} />
     </div>
   )
 
