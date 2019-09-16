@@ -108,18 +108,22 @@ export default function App() {
     </div>
   )
 
-  const showBlogs = () => (
-    <div>
-      <h2>blogs</h2>
-      {showNotification()}
-      <p>{user.name} logged in <LogoutButton onLogout={handleLogout} /></p>
-      <Togglable buttonLabel="new note" ref={blogFormToggleRef}>
-        <h2>create new</h2>
-        <AddBlogForm ref={blogFormRef} onAddBlog={handleAddBlog} />
-      </Togglable>
-      {blogs.map(blog => <Blog key={blog.id} blog={blog} onLike={handleLike} />)}
-    </div>
-  )
+  const showBlogs = () => {
+    const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
+    
+    return (
+      <div>
+        <h2>blogs</h2>
+        {showNotification()}
+        <p>{user.name} logged in <LogoutButton onLogout={handleLogout} /></p>
+        <Togglable buttonLabel="new note" ref={blogFormToggleRef}>
+          <h2>create new</h2>
+          <AddBlogForm ref={blogFormRef} onAddBlog={handleAddBlog} />
+        </Togglable>
+        {sortedBlogs.map(blog => <Blog key={blog.id} blog={blog} onLike={handleLike} />)}
+      </div>
+    )
+  }
 
   return (
     <div className="App">
