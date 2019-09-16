@@ -132,7 +132,13 @@ export default function App() {
           <h2>create new</h2>
           <AddBlogForm ref={blogFormRef} onAddBlog={handleAddBlog} />
         </Togglable>
-        {sortedBlogs.map(blog => <Blog key={blog.id} blog={blog} onLike={handleLike} onRemove={handleRemove}/>)}
+        {sortedBlogs.map(blog => <Blog 
+          key={blog.id} 
+          blog={blog} 
+          onLike={handleLike} 
+          onRemove={handleRemove}
+          showRemove={blog.user.username === user.username}
+        />)}
       </div>
     )
   }
