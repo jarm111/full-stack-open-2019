@@ -32,7 +32,7 @@ const AddBlogForm = ({ onAddBlog }, ref) => {
           name="author"
           onChange={(event) => setAuthor(event.target.value)}
         />
-        </div>
+      </div>
       <div>
         url 
         <input 

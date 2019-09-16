@@ -1,7 +1,7 @@
 import React from 'react'
 import './Notification.css'
 
-const Notification = ({message, type, display}) => {
+const Notification = ({ message, type, display }) => {
   if (!display) return null
 
   const styleTypes = {

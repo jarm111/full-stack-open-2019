@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import LoginForm from './components/LoginForm';
+import React, { useState, useEffect, useCallback, useRef } from 'react'
+import LoginForm from './components/LoginForm'
 import Blog from './components/Blog'
 import LogoutButton from './components/LogoutButton'
 import loginService from './services/login'
 import blogService from './services/blogs'
-import AddBlogForm from './components/AddBlogForm';
+import AddBlogForm from './components/AddBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
@@ -51,12 +51,12 @@ export default function App() {
   const handleLogin = async (event, username, password) => {
     event.preventDefault()
     try {
-      const user = await loginService.login({username, password})
+      const user = await loginService.login({ username, password })
       setUser(user)
       notify(`${user.name} logged in`, 'info')
     } catch(err) {
       if (err.response.status === 401) {
-        notify(`wrong username or password`, 'error')
+        notify('wrong username or password', 'error')
       } else {
         notify(`${err}`, 'error')
       }
@@ -84,7 +84,7 @@ export default function App() {
 
   const handleLike = async (event, blog) => {
     event.stopPropagation()
-    const updated = {...blog, likes: blog.likes + 1}
+    const updated = { ...blog, likes: blog.likes + 1 }
     try {
       const res = await blogService.update(updated, user.token)
       notify(`liked ${res.title} by ${res.author}`, 'info')
@@ -115,7 +115,7 @@ export default function App() {
       <h2>log in to application</h2>
       {showNotification()}
       <LoginForm 
-          onLogin={handleLogin}
+        onLogin={handleLogin}
       />
     </div>
   )
@@ -147,5 +147,5 @@ export default function App() {
     <div className="App">
       {user ? showBlogs() : showLoginForm()}
     </div>
-  );
+  )
 }

@@ -9,7 +9,7 @@ const getAll = async () => {
 
 const create = async (newBlog, token) => {
   const config = {
-    headers: {Authorization: `bearer ${token}`}
+    headers: { Authorization: `bearer ${token}` }
   }
 
   const res = await axios.post(baseUrl, newBlog, config)
@@ -19,7 +19,7 @@ const create = async (newBlog, token) => {
 const update = async (updated, token) => {
   const url = `${baseUrl}/${updated.id}`
   const config = {
-    headers: {Authorization: `bearer ${token}`}
+    headers: { Authorization: `bearer ${token}` }
   }
 
   const res = await axios.put(url, updated, config)
@@ -29,7 +29,7 @@ const update = async (updated, token) => {
 const remove = async (blog, token) => {
   const url = `${baseUrl}/${blog.id}`
   const config = {
-    headers: {Authorization: `bearer ${token}`}
+    headers: { Authorization: `bearer ${token}` }
   }
 
   await axios.delete(url, config)

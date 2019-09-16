@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog, onLike, onRemove, showRemove}) => {
+const Blog = ({ blog, onLike, onRemove, showRemove }) => {
   const [detailsVisible, setDetailsVisible] = useState(false)
 
   const blogStyle = {
@@ -17,8 +17,8 @@ const Blog = ({ blog, onLike, onRemove, showRemove}) => {
     color: 'white'
   }
 
-  const showDetailsWhenVisible = { display: detailsVisible ? '' : 'none'}
-  const showRemoveWhenVisible = { display: showRemove ? '' : 'none'}
+  const showDetailsWhenVisible = { display: detailsVisible ? '' : 'none' }
+  const showRemoveWhenVisible = { display: showRemove ? '' : 'none' }
 
   const toggleVisiblity = () => {
     setDetailsVisible(!detailsVisible)
@@ -33,7 +33,7 @@ const Blog = ({ blog, onLike, onRemove, showRemove}) => {
         <a href={blog.url}>{blog.url}</a> <br />
         {blog.likes} likes <button onClick={event => onLike(event, blog)}>like</button> <br />
         added by {blog.user.name} <br />
-        <button style={{...removeButtonStyle, ...showRemoveWhenVisible}} onClick={event => onRemove(event, blog)}>remove</button> <br />
+        <button style={{ ...removeButtonStyle, ...showRemoveWhenVisible }} onClick={event => onRemove(event, blog)}>remove</button> <br />
       </div>
     </div>
   )
