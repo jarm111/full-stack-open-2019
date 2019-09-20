@@ -133,7 +133,6 @@ export default function App() {
           <AddBlogForm ref={blogFormRef} onAddBlog={handleAddBlog} />
         </Togglable>
         {sortedBlogs.map(blog => <Blog 
-          className="blog"
           key={blog.id} 
           blog={blog} 
           onLike={handleLike} 
