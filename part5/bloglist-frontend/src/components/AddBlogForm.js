@@ -1,46 +1,32 @@
-import React, { useState, forwardRef, useImperativeHandle } from 'react'
+import React, { forwardRef, useImperativeHandle } from 'react'
+import { useField } from '../hooks'
 
 const AddBlogForm = ({ onAddBlog }, ref) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
 
   useImperativeHandle(ref, () => ({
     resetFields: () => {
-      setTitle('')
-      setAuthor('')
-      setUrl('')
+      title.reset()
+      author.reset()
+      url.reset()
     }
   }))
 
   return (
-    <form onSubmit={e => onAddBlog(e, { title, author, url })}>
+    <form onSubmit={e => onAddBlog(e, { title: title.value, author: author.value, url: url.value })}>
       <div>
         title 
-        <input 
-          type="text"
-          value={title}
-          name="title"
-          onChange={(event) => setTitle(event.target.value)}
-        />
+        <input {...title} />
       </div>
       <div>
         author 
-        <input 
-          type="text"
-          value={author}
-          name="author"
-          onChange={(event) => setAuthor(event.target.value)}
-        />
+        <input {...author} />
       </div>
       <div>
         url 
-        <input 
-          type="text"
-          value={url}
-          name="url"
-          onChange={(event) => setUrl(event.target.value)}
-        />
+        <input {...url} />
       </div>
       <button type="submit">create</button>
     </form>
