@@ -3,8 +3,10 @@ import { useField } from '../hooks'
 
 const LoginForm = ({ onLogin }) => {
   const username = useField('text')
+  delete username.reset
   const password = useField('password')
-  
+  delete password.reset
+
   return (
     <form onSubmit={(event) => onLogin(event, username.value, password.value)}>
       <div>
