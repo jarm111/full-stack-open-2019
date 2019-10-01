@@ -7,9 +7,9 @@ const App = ({ store }) => {
   return (
     <div>
       <h2>Anecdotes</h2>
+      <Notification store={store} />  
       <AnecdoteForm store={store}/>
       <AnecdoteList store={store} />
-      <Notification store={store} />  
     </div>
   )
 }
