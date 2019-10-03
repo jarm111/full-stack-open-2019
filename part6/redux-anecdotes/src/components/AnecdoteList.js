@@ -4,9 +4,6 @@ import { connect } from 'react-redux'
 // import { notify } from '../utils'
 
 const AnecdoteList = ({ anecdotes, filter }) => {
-  // const anecdotes = store.getState().anecdotes
-  // const filter = store.getState().filter
-
   const handleClick = (anecdote) => {
     // store.dispatch(vote(anecdote.id))
     // notify(`you voted '${anecdote.content}'`, store)

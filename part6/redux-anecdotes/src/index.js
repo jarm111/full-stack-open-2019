@@ -6,6 +6,7 @@ import App from './App'
 import anecdoteReducer from './reducers/anecdoteReducer'
 import notificationReducer from './reducers/notificationReducer'
 import filterReducer from './reducers/filterReducer'
+import { setStore } from './utils'
 
 const reducer = combineReducers({
   anecdotes: anecdoteReducer,
@@ -13,6 +14,7 @@ const reducer = combineReducers({
   filter: filterReducer
 })
 const store = createStore(reducer)
+setStore(store)
 
 
 ReactDOM.render(
