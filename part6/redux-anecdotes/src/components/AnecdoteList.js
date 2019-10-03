@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-// import { vote } from '../reducers/anecdoteReducer'
-// import { notify } from '../utils'
+import { vote } from '../reducers/anecdoteReducer'
+import { notify } from '../utils'
 
-const AnecdoteList = ({ anecdotes, filter }) => {
+const AnecdoteList = ({ anecdotes, filter, vote }) => {
   const handleClick = (anecdote) => {
-    // store.dispatch(vote(anecdote.id))
-    // notify(`you voted '${anecdote.content}'`, store)
+    vote(anecdote.id)
+    notify(`you voted '${anecdote.content}'`)
   }
 
   return (
@@ -33,4 +33,4 @@ const mapStateToProps = state => ({
   filter: state.filter
 })
 
-export default connect(mapStateToProps)(AnecdoteList)
+export default connect(mapStateToProps, { vote })(AnecdoteList)

@@ -5,7 +5,6 @@ let store = null
 
 export const setStore = storeRef => {
   store = storeRef
-  console.log('call setStore', store)
 }
 
 export const notify = (message) => {
