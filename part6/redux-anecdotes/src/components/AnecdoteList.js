@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { vote } from '../reducers/anecdoteReducer'
 import { notify } from '../utils'
 
-const AnecdoteList = ({ anecdotes, filter, vote }) => {
+const AnecdoteList = ({ anecdotesToShow, vote }) => {
   const handleClick = (anecdote) => {
     vote(anecdote.id)
     notify(`you voted '${anecdote.content}'`)
@@ -11,8 +11,7 @@ const AnecdoteList = ({ anecdotes, filter, vote }) => {
 
   return (
     <div>
-    {anecdotes
-      .filter(a => a.content.toLowerCase().includes(filter.toLowerCase()))
+    {anecdotesToShow
       .map(anecdote =>
         <div key={anecdote.id}>
           <div>
@@ -28,9 +27,12 @@ const AnecdoteList = ({ anecdotes, filter, vote }) => {
   )
 }
 
+const filterAnecdotes = ({ anecdotes, filter }) => {
+  return anecdotes.filter(a => a.content.toLowerCase().includes(filter.toLowerCase()))
+}
+
 const mapStateToProps = state => ({
-  anecdotes: state.anecdotes,
-  filter: state.filter
+  anecdotesToShow: filterAnecdotes(state)
 })
 
 export default connect(mapStateToProps, { vote })(AnecdoteList)
