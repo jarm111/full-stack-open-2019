@@ -2,23 +2,25 @@ const notificationReducer = (state = '', action) => {
   switch (action.type) {
     case 'SET_NOTIFICATION':
       return action.message
-    case 'CLEAR_NOTIFICATION':
-      return ''
     default:
       return state
   }
 }
 
-export const setNotification = message => {
-  return {
-    type: 'SET_NOTIFICATION',
-    message
-  }
-}
-
-export const clearNotification = () => {
-  return {
-    type: 'CLEAR_NOTIFICATION'
+let timeoutID = 0
+export const setNotification = (message, activeSeconds) => {
+  return async dispatch => {
+    dispatch({
+      type: 'SET_NOTIFICATION',
+      message
+    })
+    clearTimeout(timeoutID)
+    timeoutID = setTimeout(() => {
+      dispatch({
+        type: 'SET_NOTIFICATION',
+        message: ''
+      })
+    }, activeSeconds * 1000)
   }
 }
 

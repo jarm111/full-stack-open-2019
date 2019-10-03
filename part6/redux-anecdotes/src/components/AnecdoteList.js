@@ -1,17 +1,18 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { vote } from '../reducers/anecdoteReducer'
-import { notify } from '../utils'
+import { setNotification } from '../reducers/notificationReducer'
 
-const AnecdoteList = ({ anecdotesToShow, vote }) => {
+const AnecdoteList = ({ anecdotesToShow, vote, setNotification }) => {
   const handleClick = (anecdote) => {
     vote(anecdote.id)
-    notify(`you voted '${anecdote.content}'`)
+    setNotification(`you voted '${anecdote.content}'`, 5)
   }
 
   return (
     <div>
     {anecdotesToShow
+      .sort((a, b) => b.votes - a.votes)
       .map(anecdote =>
         <div key={anecdote.id}>
           <div>
@@ -35,4 +36,4 @@ const mapStateToProps = state => ({
   anecdotesToShow: filterAnecdotes(state)
 })
 
-export default connect(mapStateToProps, { vote })(AnecdoteList)
+export default connect(mapStateToProps, { vote, setNotification })(AnecdoteList)
