@@ -1,8 +1,10 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import './Notification.css'
 
-const Notification = ({ message, type, display }) => {
-  if (!display) return null
+const Notification = ({ notification, isVisible }) => {
+  if (!isVisible) return null
+  const { message, type } = notification
 
   const styleTypes = {
     info: 'notification-info',
@@ -16,4 +18,13 @@ const Notification = ({ message, type, display }) => {
   )
 }
 
-export default Notification
+const mapStateToProps = state => {
+  const notifications = state.notification.notifications
+  return {
+    notification: notifications[notifications.length - 1],
+    isVisible: state.notification.isVisible
+  }
+}
+
+export default connect(mapStateToProps)(Notification)
+

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
+import { connect } from 'react-redux'
 import LoginForm from './components/LoginForm'
 import Blog from './components/Blog'
 import LogoutButton from './components/LogoutButton'
@@ -7,13 +8,11 @@ import blogService from './services/blogs'
 import AddBlogForm from './components/AddBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import { notify } from './reducers/notificationReducer'
 
-export default function App() {
+const App = ({ notify }) => {
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
-  const [notifMsg, setNotifMsg] = useState('')
-  const [notifType, setNotifType] = useState('info')
-  const [notifIsVisible, setNotifIsVisible] = useState(false)
 
   const blogFormRef = useRef()
   const blogFormToggleRef = useRef()
@@ -27,7 +26,7 @@ export default function App() {
         notify(`${err}`, 'error')
       }
     }, 
-    []
+    [notify]
   )
 
   useEffect(() => { getBlogs() }, [getBlogs])
@@ -38,15 +37,6 @@ export default function App() {
       setUser(persistentLogin)
     }
   }, [])
-
-  const notify = (message, type) => {
-    setNotifMsg(message)
-    setNotifType(type)
-    setNotifIsVisible(true)
-    setTimeout(() => {
-      setNotifIsVisible(false)
-    }, 5000)
-  }
   
   const handleLogin = async (event, username, password) => {
     event.preventDefault()
@@ -107,7 +97,7 @@ export default function App() {
   }
 
   const showNotification = () => (
-    <Notification message={notifMsg} type={notifType} display={notifIsVisible}/>
+    <Notification />
   )
 
   const showLoginForm = () => (
@@ -149,3 +139,5 @@ export default function App() {
     </div>
   )
 }
+
+export default connect(null, { notify })(App)
