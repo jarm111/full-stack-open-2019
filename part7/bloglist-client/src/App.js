@@ -4,14 +4,13 @@ import LoginForm from './components/LoginForm'
 import Blog from './components/Blog'
 import LogoutButton from './components/LogoutButton'
 import loginService from './services/login'
-import blogService from './services/blogs'
 import AddBlogForm from './components/AddBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import { notify } from './reducers/notificationReducer'
-import { initBlogs, addBlog, likeBlog } from './reducers/blogReducer'
+import { initBlogs, addBlog, likeBlog, removeBlog } from './reducers/blogReducer'
 
-const App = ({ notify, blogs, initBlogs, addBlog, likeBlog }) => {
+const App = ({ notify, blogs, initBlogs, addBlog, likeBlog, removeBlog }) => {
   const [user, setUser] = useState(null)
 
   const blogFormRef = useRef()
@@ -78,13 +77,7 @@ const App = ({ notify, blogs, initBlogs, addBlog, likeBlog }) => {
   const handleRemove = async (event, blog) => {
     event.stopPropagation()
     if (!window.confirm(`remove ${blog.title} by ${blog.author} ?`)) return
-    try {
-      await blogService.remove(blog, user.token)
-      notify(`removed ${blog.title} by ${blog.author}`, 'info')
-      getBlogs()
-    } catch(err) {
-      notify(`${err}`, 'error')
-    }
+    await removeBlog(blog, user.token)
   }
 
   const showNotification = () => (
@@ -135,4 +128,4 @@ const mapStateToProps = ({ blogs }) => {
   return { blogs }
 }
 
-export default connect(mapStateToProps, { notify, initBlogs, addBlog, likeBlog })(App)
+export default connect(mapStateToProps, { notify, initBlogs, addBlog, likeBlog, removeBlog })(App)
