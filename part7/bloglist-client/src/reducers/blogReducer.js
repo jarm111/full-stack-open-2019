@@ -36,4 +36,17 @@ export const addBlog = (blog, token) => {
   }
 }
 
+export const likeBlog = (blog, token) => {
+  return async dispatch => {
+    const updated = { ...blog, likes: blog.likes + 1 }
+    try {
+      const res = await blogService.update(updated, token)
+      dispatch(notify(`liked ${res.title} by ${res.author}`, 'info'))
+      dispatch(initBlogs())
+    } catch(err) {
+      dispatch(notify(`${err}`, 'error'))
+    }
+  }
+}
+
 export default blogReducer

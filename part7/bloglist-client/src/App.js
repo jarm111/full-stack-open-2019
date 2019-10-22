@@ -9,9 +9,9 @@ import AddBlogForm from './components/AddBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import { notify } from './reducers/notificationReducer'
-import { initBlogs, addBlog } from './reducers/blogReducer'
+import { initBlogs, addBlog, likeBlog } from './reducers/blogReducer'
 
-const App = ({ notify, blogs, initBlogs, addBlog }) => {
+const App = ({ notify, blogs, initBlogs, addBlog, likeBlog }) => {
   const [user, setUser] = useState(null)
 
   const blogFormRef = useRef()
@@ -72,14 +72,7 @@ const App = ({ notify, blogs, initBlogs, addBlog }) => {
 
   const handleLike = async (event, blog) => {
     event.stopPropagation()
-    const updated = { ...blog, likes: blog.likes + 1 }
-    try {
-      const res = await blogService.update(updated, user.token)
-      notify(`liked ${res.title} by ${res.author}`, 'info')
-      getBlogs()
-    } catch(err) {
-      notify(`${err}`, 'error')
-    }
+    await likeBlog(blog, user.token)
   }
 
   const handleRemove = async (event, blog) => {
@@ -142,4 +135,4 @@ const mapStateToProps = ({ blogs }) => {
   return { blogs }
 }
 
-export default connect(mapStateToProps, { notify, initBlogs, addBlog })(App)
+export default connect(mapStateToProps, { notify, initBlogs, addBlog, likeBlog })(App)
