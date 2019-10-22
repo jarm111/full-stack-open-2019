@@ -1,4 +1,5 @@
 import blogService from '../services/blogs'
+import { notify } from './notificationReducer'
 
 const INIT_BLOGS = 'INIT_BLOGS'
 
@@ -18,6 +19,20 @@ export const initBlogs = () => {
       type: INIT_BLOGS,
       data: blogs
     })
+  }
+}
+
+export const addBlog = (blog, token) => {
+  return async dispatch => {
+    try {
+      const created = await blogService.create(blog, token)
+      dispatch(notify(`a new blog ${created.title} by ${created.author} added`, 'info'))
+      await dispatch(initBlogs())
+      return Promise.resolve()
+    } catch(err) {
+      dispatch(notify(`${err}`, 'error'))
+      return Promise.reject()
+    }
   }
 }
 

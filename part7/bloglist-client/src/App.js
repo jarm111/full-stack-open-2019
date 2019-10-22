@@ -9,9 +9,9 @@ import AddBlogForm from './components/AddBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import { notify } from './reducers/notificationReducer'
-import { initBlogs } from './reducers/blogReducer'
+import { initBlogs, addBlog } from './reducers/blogReducer'
 
-const App = ({ notify, blogs, initBlogs }) => {
+const App = ({ notify, blogs, initBlogs, addBlog }) => {
   const [user, setUser] = useState(null)
 
   const blogFormRef = useRef()
@@ -61,13 +61,12 @@ const App = ({ notify, blogs, initBlogs }) => {
   const handleAddBlog = async (event, blog) => {
     event.preventDefault()
     try {
-      const created = await blogService.create(blog, user.token)
-      notify(`a new blog ${created.title} by ${created.author} added`, 'info')
-      getBlogs()
+      await addBlog(blog, user.token)
       blogFormRef.current.resetFields()
       blogFormToggleRef.current.toggleVisibility()
-    } catch(err) {
-      notify(`${err}`, 'error')
+    } catch(e) {
+      // error handled in addBlog()
+      return
     }
   }
 
@@ -117,7 +116,7 @@ const App = ({ notify, blogs, initBlogs }) => {
         <h2>blogs</h2>
         {showNotification()}
         <p>{user.name} logged in <LogoutButton onLogout={handleLogout} /></p>
-        <Togglable buttonLabel="new note" ref={blogFormToggleRef}>
+        <Togglable buttonLabel="new blog" ref={blogFormToggleRef}>
           <h2>create new</h2>
           <AddBlogForm ref={blogFormRef} onAddBlog={handleAddBlog} />
         </Togglable>
@@ -143,4 +142,4 @@ const mapStateToProps = ({ blogs }) => {
   return { blogs }
 }
 
-export default connect(mapStateToProps, { notify, initBlogs })(App)
+export default connect(mapStateToProps, { notify, initBlogs, addBlog })(App)
