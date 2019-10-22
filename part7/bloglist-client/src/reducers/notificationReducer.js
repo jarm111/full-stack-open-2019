@@ -3,11 +3,14 @@ const initialState = {
   isVisible: false
 }
 
+const SET_NOTIFICATION = 'SET_NOTIFICATION'
+const CLEAR_NOTIFICATION = 'CLEAR_NOTIFICATION'
+
 const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
-  case 'SET_NOTIFICATION':
+  case SET_NOTIFICATION:
     return { notifications: state.notifications.concat(action.notification), isVisible: true }
-  case 'CLEAR_NOTIFICATION':
+  case CLEAR_NOTIFICATION:
     return { ...state, isVisible: false }
   default:
     return state
@@ -15,12 +18,12 @@ const notificationReducer = (state = initialState, action) => {
 }
 
 const setNotification = notification => ({
-  type: 'SET_NOTIFICATION',
+  type: SET_NOTIFICATION,
   notification
 })
 
 const clearNotification = () => ({
-  type: 'CLEAR_NOTIFICATION'
+  type: CLEAR_NOTIFICATION
 })
 
 let timeoutID = 0

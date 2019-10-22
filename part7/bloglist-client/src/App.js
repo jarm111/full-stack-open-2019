@@ -9,10 +9,10 @@ import AddBlogForm from './components/AddBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import { notify } from './reducers/notificationReducer'
+import { initBlogs } from './reducers/blogReducer'
 
-const App = ({ notify }) => {
+const App = ({ notify, blogs, initBlogs }) => {
   const [user, setUser] = useState(null)
-  const [blogs, setBlogs] = useState([])
 
   const blogFormRef = useRef()
   const blogFormToggleRef = useRef()
@@ -20,13 +20,12 @@ const App = ({ notify }) => {
   const getBlogs = useCallback(
     async () => {
       try {
-        const res = await blogService.getAll()
-        setBlogs(res)
+        initBlogs()
       } catch(err) {
         notify(`${err}`, 'error')
       }
     }, 
-    [notify]
+    [notify, initBlogs]
   )
 
   useEffect(() => { getBlogs() }, [getBlogs])
@@ -140,4 +139,8 @@ const App = ({ notify }) => {
   )
 }
 
-export default connect(null, { notify })(App)
+const mapStateToProps = ({ blogs }) => {
+  return { blogs }
+}
+
+export default connect(mapStateToProps, { notify, initBlogs })(App)
