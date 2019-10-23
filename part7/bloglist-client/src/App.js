@@ -1,18 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 import LoginForm from './components/LoginForm'
 import Blog from './components/Blog'
 import LogoutButton from './components/LogoutButton'
-import loginService from './services/login'
 import AddBlogForm from './components/AddBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import { notify } from './reducers/notificationReducer'
 import { initBlogs, addBlog, likeBlog, removeBlog } from './reducers/blogReducer'
+import { login, logout,  loginPersistent } from './reducers/loginReducer'
 
-const App = ({ notify, blogs, initBlogs, addBlog, likeBlog, removeBlog }) => {
-  const [user, setUser] = useState(null)
-
+const App = ({ blogs, user, initBlogs, addBlog, likeBlog, removeBlog, login, logout,  loginPersistent }) => {
   const blogFormRef = useRef()
   const blogFormToggleRef = useRef()
 
@@ -21,31 +19,16 @@ const App = ({ notify, blogs, initBlogs, addBlog, likeBlog, removeBlog }) => {
   }, [initBlogs])
 
   useEffect(() => {
-    const persistentLogin = loginService.getPersistentLogin()
-    if (persistentLogin) {
-      setUser(persistentLogin)
-    }
-  }, [])
+    loginPersistent()
+  }, [loginPersistent])
   
   const handleLogin = async (event, username, password) => {
     event.preventDefault()
-    try {
-      const user = await loginService.login({ username, password })
-      setUser(user)
-      notify(`${user.name} logged in`, 'info')
-    } catch(err) {
-      if (err.response.status === 401) {
-        notify('wrong username or password', 'error')
-      } else {
-        notify(`${err}`, 'error')
-      }
-    }
+    login(username, password)
   }
 
   const handleLogout = () => {
-    notify(`${user.name} logged out`, 'info')
-    setUser(null)
-    loginService.clearPersistentLogin()
+    logout()
   }
 
   const handleAddBlog = async (event, blog) => {
@@ -67,7 +50,9 @@ const App = ({ notify, blogs, initBlogs, addBlog, likeBlog, removeBlog }) => {
 
   const handleRemove = async (event, blog) => {
     event.stopPropagation()
-    if (!window.confirm(`remove ${blog.title} by ${blog.author} ?`)) return
+    if (!window.confirm(`remove ${blog.title} by ${blog.author} ?`)) {
+      return
+    }
     await removeBlog(blog, user.token)
   }
 
@@ -111,10 +96,11 @@ const App = ({ notify, blogs, initBlogs, addBlog, likeBlog, removeBlog }) => {
   )
 }
 
-const mapStateToProps = ({ blogs }) => {
-  return { blogs }
+const mapStateToProps = ({ blogs, user }) => {
+  return { blogs, user }
 }
 
 export default connect(
-  mapStateToProps, { notify, initBlogs, addBlog, likeBlog, removeBlog }
+  mapStateToProps, 
+  { notify, initBlogs, addBlog, likeBlog, removeBlog, login, logout,  loginPersistent }
 )(App)
