@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 import LoginForm from './components/LoginForm'
 import Blog from './components/Blog'
@@ -16,18 +16,9 @@ const App = ({ notify, blogs, initBlogs, addBlog, likeBlog, removeBlog }) => {
   const blogFormRef = useRef()
   const blogFormToggleRef = useRef()
 
-  const getBlogs = useCallback(
-    async () => {
-      try {
-        initBlogs()
-      } catch(err) {
-        notify(`${err}`, 'error')
-      }
-    }, 
-    [notify, initBlogs]
-  )
-
-  useEffect(() => { getBlogs() }, [getBlogs])
+  useEffect(() => { 
+    initBlogs() 
+  }, [initBlogs])
 
   useEffect(() => {
     const persistentLogin = loginService.getPersistentLogin()
@@ -80,14 +71,10 @@ const App = ({ notify, blogs, initBlogs, addBlog, likeBlog, removeBlog }) => {
     await removeBlog(blog, user.token)
   }
 
-  const showNotification = () => (
-    <Notification />
-  )
-
   const showLoginForm = () => (
     <div>
       <h2>log in to application</h2>
-      {showNotification()}
+      <Notification />
       <LoginForm 
         onLogin={handleLogin}
       />
@@ -100,7 +87,7 @@ const App = ({ notify, blogs, initBlogs, addBlog, likeBlog, removeBlog }) => {
     return (
       <div>
         <h2>blogs</h2>
-        {showNotification()}
+        <Notification />
         <p>{user.name} logged in <LogoutButton onLogout={handleLogout} /></p>
         <Togglable buttonLabel="new blog" ref={blogFormToggleRef}>
           <h2>create new</h2>
@@ -128,4 +115,6 @@ const mapStateToProps = ({ blogs }) => {
   return { blogs }
 }
 
-export default connect(mapStateToProps, { notify, initBlogs, addBlog, likeBlog, removeBlog })(App)
+export default connect(
+  mapStateToProps, { notify, initBlogs, addBlog, likeBlog, removeBlog }
+)(App)

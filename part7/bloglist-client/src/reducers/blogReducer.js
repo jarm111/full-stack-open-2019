@@ -13,11 +13,15 @@ const blogReducer = (state = [], action) => {
 }
 
 export const initBlogs = () => async dispatch => {
-  const blogs = await blogService.getAll()
-  dispatch({
-    type: INIT_BLOGS,
-    data: blogs
-  })
+  try {
+    const blogs = await blogService.getAll()
+    dispatch({
+      type: INIT_BLOGS,
+      data: blogs
+    })
+  } catch(err) {
+    dispatch(notify(`${err}`, 'error'))
+  }
 }
 
 export const addBlog = (blog, token) => async dispatch => {
