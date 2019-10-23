@@ -1,14 +1,21 @@
 import React from 'react'
 import { useField } from '../hooks'
+import { connect } from 'react-redux'
+import { login } from '../reducers/loginReducer'
 
-const LoginForm = ({ onLogin }) => {
+const LoginForm = ({ login }) => {
   const username = useField('text')
   delete username.reset
   const password = useField('password')
   delete password.reset
 
+  const handleLogin = (event, username, password) => {
+    event.preventDefault()
+    login(username, password)
+  }
+
   return (
-    <form onSubmit={(event) => onLogin(event, username.value, password.value)}>
+    <form onSubmit={(event) => handleLogin(event, username.value, password.value)}>
       <div>
         username 
         <input {...username}/>
@@ -22,4 +29,4 @@ const LoginForm = ({ onLogin }) => {
   )
 }
 
-export default LoginForm
+export default connect(null, { login })(LoginForm)

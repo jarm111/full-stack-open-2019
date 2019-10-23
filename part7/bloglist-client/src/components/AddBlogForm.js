@@ -1,21 +1,33 @@
-import React, { forwardRef, useImperativeHandle } from 'react'
+import React from 'react'
+import { connect } from 'react-redux'
+import { addBlog } from '../reducers/blogReducer'
 import { useField } from '../hooks'
 
-const AddBlogForm = ({ onAddBlog }, ref) => {
+const AddBlogForm = ({ user, addBlog, onAddBlogSuccess }) => {
   const { reset: resetTitle, ...title } = useField('text')
   const { reset: resetAuthor, ...author } = useField('text')
   const { reset: resetUrl, ...url } = useField('text')
 
-  useImperativeHandle(ref, () => ({
-    resetFields: () => {
-      resetTitle()
-      resetAuthor()
-      resetUrl()
+  const resetFields = () => {
+    resetTitle()
+    resetAuthor()
+    resetUrl()
+  }
+
+  const handleAddBlog = async (event, blog) => {
+    event.preventDefault()
+    try {
+      await addBlog(blog, user.token)
+      resetFields()
+      onAddBlogSuccess()
+    } catch(e) {
+      // error handled in addBlog()
+      return
     }
-  }))
+  }
 
   return (
-    <form onSubmit={e => onAddBlog(e, { title: title.value, author: author.value, url: url.value })}>
+    <form onSubmit={e => handleAddBlog(e, { title: title.value, author: author.value, url: url.value })}>
       <div>
         title 
         <input {...title} />
@@ -33,4 +45,6 @@ const AddBlogForm = ({ onAddBlog }, ref) => {
   )
 }
 
-export default forwardRef(AddBlogForm)
+const mapStateToProps = ({ user }) => ({ user })
+
+export default connect(mapStateToProps, { addBlog })(AddBlogForm)

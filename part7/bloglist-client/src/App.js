@@ -6,12 +6,10 @@ import AddBlogForm from './components/AddBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import Blogs from './components/Blogs'
-import { notify } from './reducers/notificationReducer'
-import { initBlogs, addBlog, likeBlog, removeBlog } from './reducers/blogReducer'
-import { login, logout,  loginPersistent } from './reducers/loginReducer'
+import { initBlogs } from './reducers/blogReducer'
+import { loginPersistent } from './reducers/loginReducer'
 
-const App = ({ user, initBlogs, addBlog, likeBlog, removeBlog, login, logout,  loginPersistent }) => {
-  const blogFormRef = useRef()
+const App = ({ user, initBlogs, loginPersistent }) => {
   const blogFormToggleRef = useRef()
 
   useEffect(() => { 
@@ -21,48 +19,16 @@ const App = ({ user, initBlogs, addBlog, likeBlog, removeBlog, login, logout,  l
   useEffect(() => {
     loginPersistent()
   }, [loginPersistent])
-  
-  const handleLogin = async (event, username, password) => {
-    event.preventDefault()
-    login(username, password)
-  }
 
-  const handleLogout = () => {
-    logout()
-  }
-
-  const handleAddBlog = async (event, blog) => {
-    event.preventDefault()
-    try {
-      await addBlog(blog, user.token)
-      blogFormRef.current.resetFields()
-      blogFormToggleRef.current.toggleVisibility()
-    } catch(e) {
-      // error handled in addBlog()
-      return
-    }
-  }
-
-  const handleLike = async (event, blog) => {
-    event.stopPropagation()
-    await likeBlog(blog, user.token)
-  }
-
-  const handleRemove = async (event, blog) => {
-    event.stopPropagation()
-    if (!window.confirm(`remove ${blog.title} by ${blog.author} ?`)) {
-      return
-    }
-    await removeBlog(blog, user.token)
+  const handleAddBlogSuccess = () => {
+    blogFormToggleRef.current.toggleVisibility()
   }
 
   const showLoginForm = () => (
     <div>
       <h2>log in to application</h2>
       <Notification />
-      <LoginForm 
-        onLogin={handleLogin}
-      />
+      <LoginForm />
     </div>
   )
 
@@ -70,12 +36,12 @@ const App = ({ user, initBlogs, addBlog, likeBlog, removeBlog, login, logout,  l
     <div>
       <h2>blogs</h2>
       <Notification />
-      <p>{user.name} logged in <LogoutButton onLogout={handleLogout} /></p>
+      <p>{user.name} logged in <LogoutButton /></p>
       <Togglable buttonLabel="new blog" ref={blogFormToggleRef}>
         <h2>create new</h2>
-        <AddBlogForm ref={blogFormRef} onAddBlog={handleAddBlog} />
+        <AddBlogForm onAddBlogSuccess={handleAddBlogSuccess}/>
       </Togglable>
-      <Blogs onLike={handleLike} onRemove={handleRemove} />
+      <Blogs />
     </div>
   )
 
@@ -92,5 +58,5 @@ const mapStateToProps = ({ blogs, user }) => {
 
 export default connect(
   mapStateToProps, 
-  { notify, initBlogs, addBlog, likeBlog, removeBlog, login, logout,  loginPersistent }
+  { initBlogs, loginPersistent }
 )(App)
