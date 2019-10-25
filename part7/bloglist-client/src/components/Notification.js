@@ -1,9 +1,31 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import { connect } from 'react-redux'
+import usePrevious from '../hooks/usePrevious'
 import './Notification.css'
 
-const Notification = ({ notification, isVisible }) => {
-  if (!isVisible) return null
+const Notification = ({ notification }) => {
+  const [isVisible, setVisibility] = useState(false)
+  const prevNotification = usePrevious(notification)
+  const timeoutID = useRef(0)
+
+  const showNotification = () => {
+    if (!isVisible) {
+      setVisibility(true)
+    }
+    clearTimeout(timeoutID.current)
+    timeoutID.current = setTimeout(() => {
+      setVisibility(false)
+    }, 10000)
+  }
+
+  if (notification !== prevNotification) {
+    showNotification()
+  }
+
+  if (!isVisible) {
+    return null
+  }
+
   const { message, type } = notification
 
   const styleTypes = {
@@ -19,10 +41,9 @@ const Notification = ({ notification, isVisible }) => {
 }
 
 const mapStateToProps = state => {
-  const notifications = state.notification.notifications
+  const { notifications } = state
   return {
-    notification: notifications[notifications.length - 1],
-    isVisible: state.notification.isVisible
+    notification: notifications[notifications.length - 1]
   }
 }
 

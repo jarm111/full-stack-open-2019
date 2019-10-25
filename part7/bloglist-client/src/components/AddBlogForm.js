@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { addBlog } from '../reducers/blogReducer'
-import { useField } from '../hooks'
+import useField from '../hooks/useField'
 
 const AddBlogForm = ({ user, addBlog, onAddBlogSuccess }) => {
   const { reset: resetTitle, ...title } = useField('text')
