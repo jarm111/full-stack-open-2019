@@ -6,7 +6,6 @@ import {
   Route
 } from 'react-router-dom'
 import LoginForm from './components/LoginForm'
-import LogoutButton from './components/LogoutButton'
 import AddBlogForm from './components/AddBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
@@ -14,6 +13,7 @@ import Blogs from './components/Blogs'
 import Blog from './components/Blog'
 import Users from './components/Users'
 import User from './components/User'
+import NavMenu from './components/NavMenu'
 import { initBlogs } from './reducers/blogReducer'
 import { initUsers } from './reducers/userReducer'
 import { loginPersistent } from './reducers/loginReducer'
@@ -37,7 +37,6 @@ const App = ({ login, initBlogs, initUsers, loginPersistent }) => {
   const showLoginForm = () => (
     <div>
       <h2>log in to application</h2>
-      <Notification />
       <LoginForm />
     </div>
   )
@@ -61,9 +60,8 @@ const App = ({ login, initBlogs, initUsers, loginPersistent }) => {
 
   const showContent = () => (
     <div>
+      <NavMenu />
       <h2>blogs</h2>
-      <Notification />
-      <p>{login.name} logged in <LogoutButton /></p>
       <Switch>
         <Route exact path="/">
           {showBlogs()}
@@ -82,11 +80,12 @@ const App = ({ login, initBlogs, initUsers, loginPersistent }) => {
   )
 
   return (
-    <Router>
-      <div className="App">
+    <div className="App">
+      <Router>
+        <Notification />
         {login ? showContent() : showLoginForm()}
-      </div>
-    </Router>
+      </Router>
+    </div>
   )
 }
 
