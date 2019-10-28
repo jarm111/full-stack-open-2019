@@ -33,11 +33,11 @@ export const login = (username, password) => async dispatch => {
 }
 
 export const logout = () => async (dispatch, getState) => {
-  const { user } = getState()
+  const { login } = getState()
   dispatch({
     type: CLEAR_USER,
   })
-  dispatch(notify(`${user.name} logged out`, 'info'))
+  dispatch(notify(`${login.name} logged out`, 'info'))
   loginService.clearPersistentLogin()
 }
 

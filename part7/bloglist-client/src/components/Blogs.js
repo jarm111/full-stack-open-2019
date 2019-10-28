@@ -3,12 +3,12 @@ import { connect } from 'react-redux'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import Blog from './Blog'
 
-const Blogs = ({ blogs, user, likeBlog, removeBlog }) => {
+const Blogs = ({ blogs, login, likeBlog, removeBlog }) => {
   const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
 
   const handleLike = (event, blog) => {
     event.stopPropagation()
-    likeBlog(blog, user.token)
+    likeBlog(blog, login.token)
   }
 
   const handleRemove = (event, blog) => {
@@ -16,7 +16,7 @@ const Blogs = ({ blogs, user, likeBlog, removeBlog }) => {
     if (!window.confirm(`remove ${blog.title} by ${blog.author} ?`)) {
       return
     }
-    removeBlog(blog, user.token)
+    removeBlog(blog, login.token)
   }
 
   return (
@@ -26,14 +26,14 @@ const Blogs = ({ blogs, user, likeBlog, removeBlog }) => {
         blog={blog} 
         onLike={handleLike} 
         onRemove={handleRemove}
-        showRemove={blog.user.username === user.username}
+        showRemove={blog.user.username === login.username}
       />)}
     </div>
   )
 }
 
-const mapStateToProps = ({ blogs, user }) => ({
-  blogs, user
+const mapStateToProps = ({ blogs, login }) => ({
+  blogs, login
 })
 
 export default connect(mapStateToProps, { likeBlog, removeBlog })(Blogs)
