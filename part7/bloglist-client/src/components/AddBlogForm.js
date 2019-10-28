@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { addBlog } from '../reducers/blogReducer'
 import useField from '../hooks/useField'
 
-const AddBlogForm = ({ user, addBlog, onAddBlogSuccess }) => {
+const AddBlogForm = ({ login, addBlog, onAddBlogSuccess }) => {
   const { reset: resetTitle, ...title } = useField('text')
   const { reset: resetAuthor, ...author } = useField('text')
   const { reset: resetUrl, ...url } = useField('text')
@@ -17,7 +17,7 @@ const AddBlogForm = ({ user, addBlog, onAddBlogSuccess }) => {
   const handleAddBlog = async (event, blog) => {
     event.preventDefault()
     try {
-      await addBlog(blog, user.token)
+      await addBlog(blog, login.token)
       resetFields()
       onAddBlogSuccess()
     } catch(e) {
@@ -45,6 +45,6 @@ const AddBlogForm = ({ user, addBlog, onAddBlogSuccess }) => {
   )
 }
 
-const mapStateToProps = ({ user }) => ({ user })
+const mapStateToProps = ({ login }) => ({ login })
 
 export default connect(mapStateToProps, { addBlog })(AddBlogForm)

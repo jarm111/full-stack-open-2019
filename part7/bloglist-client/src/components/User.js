@@ -1,12 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Redirect, useParams } from 'react-router-dom'
 
-const User = ({ users, id }) => {
+const User = ({ users }) => {
+  const { id } = useParams()
+
   if (users.length === 0) {
     return null
   }
 
   const user = users.find(user => user.id === id)
+
+  if (!user) {
+    return <Redirect to="/"/>
+  }
 
   return (
     <div>

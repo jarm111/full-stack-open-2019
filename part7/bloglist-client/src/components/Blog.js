@@ -1,15 +1,31 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
+import { connect } from 'react-redux'
+import { Redirect, useParams } from 'react-router-dom'
+import { likeBlog, removeBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, onLike, onRemove, showRemove }) => {
-  const [detailsVisible, setDetailsVisible] = useState(false)
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
+const Blog = ({ blogs, login, likeBlog, removeBlog }) => {
+  const { id } = useParams()
+
+  if (blogs.length === 0) {
+    return null
+  }
+
+  const blog = blogs.find(user => user.id === id)
+
+  if (!blog) {
+    return <Redirect to="/" />
+  }
+
+  const handleLike = () => {
+    likeBlog(blog, login.token)
+  }
+
+  const handleRemove = () => {
+    if (!window.confirm(`remove ${blog.title} by ${blog.author} ?`)) {
+      return
+    }
+    removeBlog(blog, login.token)
   }
 
   const removeButtonStyle = {
@@ -17,33 +33,19 @@ const Blog = ({ blog, onLike, onRemove, showRemove }) => {
     color: 'white'
   }
 
-  const showDetailsWhenVisible = { display: detailsVisible ? '' : 'none' }
-  const showRemoveWhenVisible = { display: showRemove ? '' : 'none' }
-
-  const toggleVisiblity = () => {
-    setDetailsVisible(!detailsVisible)
-  }
+  const showRemoveWhenVisible = { display: blog.user.username === login.username ? '' : 'none' }
 
   return (
-    <div style={blogStyle} onClick={toggleVisiblity} className="blog">
-      <div>
-        {blog.title} {blog.author}
-      </div>
-      <div style={showDetailsWhenVisible}>
-        <a href={blog.url}>{blog.url}</a> <br />
-        {blog.likes} likes <button onClick={event => onLike(event, blog)}>like</button> <br />
-        added by {blog.user.name} <br />
-        <button style={{ ...removeButtonStyle, ...showRemoveWhenVisible }} onClick={event => onRemove(event, blog)}>remove</button> <br />
-      </div>
+    <div>
+      <h3>{blog.title} by {blog.author}</h3>
+      <a href={blog.url}>{blog.url}</a> <br />
+      {blog.likes} likes <button onClick={() => handleLike()}>like</button> <br />
+      added by {blog.user.name} <br />
+      <button style={{ ...removeButtonStyle, ...showRemoveWhenVisible }} onClick={() => handleRemove()}>remove</button> <br />
     </div>
   )
 }
 
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired, 
-  onLike: PropTypes.func.isRequired, 
-  onRemove: PropTypes.func.isRequired, 
-  showRemove: PropTypes.bool.isRequired
-}
+const mapStateToProps = ({ blogs, login }) => ({ blogs, login })
 
-export default Blog
+export default connect(mapStateToProps, { likeBlog, removeBlog })(Blog)

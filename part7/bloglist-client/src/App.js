@@ -11,6 +11,7 @@ import AddBlogForm from './components/AddBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import Blogs from './components/Blogs'
+import Blog from './components/Blog'
 import Users from './components/Users'
 import User from './components/User'
 import { initBlogs } from './reducers/blogReducer'
@@ -70,7 +71,12 @@ const App = ({ login, initBlogs, initUsers, loginPersistent }) => {
         <Route exact path="/users">
           {showUsers()}
         </Route>
-        <Route path="/users/:id" render={({ match }) => <User id={match.params.id}/>} />
+        <Route path="/users/:id">
+          <User />
+        </Route>
+        <Route path="/blogs/:id">
+          <Blog />
+        </Route>
       </Switch>
     </div>
   )
