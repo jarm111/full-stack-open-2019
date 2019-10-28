@@ -12,15 +12,18 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import Blogs from './components/Blogs'
 import Users from './components/Users'
+import User from './components/User'
 import { initBlogs } from './reducers/blogReducer'
+import { initUsers } from './reducers/userReducer'
 import { loginPersistent } from './reducers/loginReducer'
 
-const App = ({ login, initBlogs, loginPersistent }) => {
+const App = ({ login, initBlogs, initUsers, loginPersistent }) => {
   const blogFormToggleRef = useRef()
 
   useEffect(() => { 
-    initBlogs() 
-  }, [initBlogs])
+    initBlogs()
+    initUsers()
+  }, [initBlogs, initUsers])
 
   useEffect(() => {
     loginPersistent()
@@ -64,9 +67,10 @@ const App = ({ login, initBlogs, loginPersistent }) => {
         <Route exact path="/">
           {showBlogs()}
         </Route>
-        <Route path="/users">
+        <Route exact path="/users">
           {showUsers()}
         </Route>
+        <Route path="/users/:id" render={({ match }) => <User id={match.params.id}/>} />
       </Switch>
     </div>
   )
@@ -86,5 +90,5 @@ const mapStateToProps = ({ blogs, login }) => {
 
 export default connect(
   mapStateToProps, 
-  { initBlogs, loginPersistent }
+  { initBlogs, initUsers, loginPersistent }
 )(App)

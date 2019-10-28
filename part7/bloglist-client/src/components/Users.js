@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-import { initUsers } from '../reducers/userReducer'
+import { useLocation, Link } from 'react-router-dom'
 
-const Users = ({ users, initUsers }) => {
-  useEffect(() => {
-    initUsers()
-  })
+const Users = ({ users }) => {
+  const { pathname } = useLocation()
 
   return (
     <table>
@@ -18,7 +16,9 @@ const Users = ({ users, initUsers }) => {
       <tbody>
         {users.map(user => 
           <tr key={user.id}>
-            <td>{user.name}</td>
+            <td>
+              <Link to={`${pathname}/${user.id}`}>{user.name}</Link>
+            </td>
             <td>{user.blogs.length}</td>
           </tr>
         )}
@@ -29,4 +29,4 @@ const Users = ({ users, initUsers }) => {
 
 const mapStateToProps = ({ users }) => ({ users })
 
-export default connect(mapStateToProps, { initUsers })(Users)
+export default connect(mapStateToProps)(Users)
