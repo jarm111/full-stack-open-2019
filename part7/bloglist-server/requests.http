@@ -67,3 +67,12 @@ Content-Type: {{contentType}}
   "username": "tommy",
   "password": "p@ssW04D"
 }
+
+###
+
+POST http://{{baseUrl}}/{{blogs}}/{{newBlog.response.body.id}}/comments
+Content-Type: {{contentType}}
+
+{
+  "content": "This is a test comment."
+}

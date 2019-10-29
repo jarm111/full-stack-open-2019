@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Comment = require('./comment')
 
 const blogSchema = mongoose.Schema({
   title: {
@@ -14,6 +15,7 @@ const blogSchema = mongoose.Schema({
     type: Number,
     default: 0
   },
+  comments: [Comment.schema],
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
