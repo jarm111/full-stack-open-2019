@@ -42,6 +42,12 @@ const Blog = ({ blogs, login, likeBlog, removeBlog }) => {
       {blog.likes} likes <button onClick={() => handleLike()}>like</button> <br />
       added by {blog.user.name} <br />
       <button style={{ ...removeButtonStyle, ...showRemoveWhenVisible }} onClick={() => handleRemove()}>remove</button> <br />
+      <h4>comments</h4>
+      <ul>
+        {blog.comments.map(comment => 
+          <li key={comment.id}>{comment.content}</li>
+        )}
+      </ul>
     </div>
   )
 }
