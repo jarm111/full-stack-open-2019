@@ -6,7 +6,7 @@ import {
   Route
 } from 'react-router-dom'
 import LoginForm from './components/LoginForm'
-import AddBlogForm from './components/AddBlogForm'
+import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import Blogs from './components/Blogs'
@@ -45,7 +45,7 @@ const App = ({ login, initBlogs, initUsers, loginPersistent }) => {
     <div>
       <Togglable buttonLabel="new blog" ref={blogFormToggleRef}>
         <h2>create new</h2>
-        <AddBlogForm onAddBlogSuccess={handleAddBlogSuccess}/>
+        <BlogForm onAddBlogSuccess={handleAddBlogSuccess}/>
       </Togglable>
       <Blogs />
     </div>
