@@ -57,4 +57,14 @@ export const removeBlog = (blog, token) => async dispatch => {
   }
 }
 
+export const addCommentToBlog = (blog, commentText) => async dispatch => {
+  try {
+    await blogService.addComment(blog, commentText)
+    dispatch(notify(`added comment ${commentText} to ${blog.title}`, 'info'))
+    dispatch(initBlogs())
+  } catch (err) {
+    dispatch(notify(`${err}`, 'error'))
+  }
+}
+
 export default blogReducer
