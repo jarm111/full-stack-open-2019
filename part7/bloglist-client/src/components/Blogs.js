@@ -1,26 +1,25 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { useLocation, Link } from 'react-router-dom'
+import styled from 'styled-components'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
+
+const BlogContainer = styled.div`
+  padding: 5px;
+  border: 1px solid;
+  margin-bottom: 5px;
+`
 
 const Blogs = ({ blogs }) => {
   const { pathname } = useLocation()
   const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
-
   return (
     <div>
       {sortedBlogs.map(blog => 
-        <div key={blog.id} style={blogStyle}>
+        <BlogContainer key={blog.id}>
           <Link to={`${pathname}blogs/${blog.id}`}>{blog.title}</Link>
-        </div>
+        </BlogContainer>
       )}
     </div>
   )

@@ -1,9 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect, useParams } from 'react-router-dom'
+import styled from 'styled-components'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import CommentForm from './CommentForm'
 
+const RemoveButton = styled.button`
+  background-color: Blue;
+  color: White;
+  display: ${props => props.show ? '' : 'none'}
+`
 
 const Blog = ({ blogs, login, likeBlog, removeBlog }) => {
   const { id } = useParams()
@@ -29,20 +35,13 @@ const Blog = ({ blogs, login, likeBlog, removeBlog }) => {
     removeBlog(blog, login.token)
   }
 
-  const removeButtonStyle = {
-    backgroundColor: 'blue',
-    color: 'white'
-  }
-
-  const showRemoveWhenVisible = { display: blog.user.username === login.username ? '' : 'none' }
-
   return (
     <div>
       <h3>{blog.title} by {blog.author}</h3>
       <a href={blog.url}>{blog.url}</a> <br />
       {blog.likes} likes <button onClick={() => handleLike()}>like</button> <br />
       added by {blog.user.name} <br />
-      <button style={{ ...removeButtonStyle, ...showRemoveWhenVisible }} onClick={() => handleRemove()}>remove</button> <br />
+      <RemoveButton show={blog.user.username === login.username} onClick={() => handleRemove()}>remove</RemoveButton> <br />
       <h4>comments</h4>
       <CommentForm blog={blog} />
       <ul>

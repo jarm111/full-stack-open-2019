@@ -1,9 +1,16 @@
 import React, { useState, useImperativeHandle, forwardRef } from 'react'
+import styled from 'styled-components'
+
+const HideWhenVisible = styled.div`
+  display: ${props => props.visible ? 'none' : ''};
+`
+
+const ShowWhenVisible = styled.div`
+  display: ${props => props.visible ? '' : 'none'};
+`
 
 const Togglable = ({ children, buttonLabel, }, ref) => {
   const [visible, setVisible] = useState(false)
-  const hideWhenVisible = { display: visible ? 'none' : '' }
-  const showWhenVisible = { display: visible ? '' : 'none' }
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -13,13 +20,13 @@ const Togglable = ({ children, buttonLabel, }, ref) => {
 
   return (
     <div>
-      <div style={hideWhenVisible}>
+      <HideWhenVisible visible={visible}>
         <button onClick={toggleVisibility}>{buttonLabel}</button>
-      </div>
-      <div style={showWhenVisible}>
+      </HideWhenVisible>
+      <ShowWhenVisible visible={visible}>
         {children}
         <button onClick={toggleVisibility}>cancel</button>
-      </div>
+      </ShowWhenVisible>
     </div>
   )
 }

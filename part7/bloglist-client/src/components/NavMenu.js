@@ -1,25 +1,28 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 import LogoutButton from '../components/LogoutButton'
 
+const menuItemStyles = [
+  'padding-right: 10px; display: inline;'
+]
+
+const LinkMenuItem = styled(Link)(menuItemStyles)
+const MenuItem = styled.div(menuItemStyles)
+
+const Menu = styled.div`
+  padding: 5px;
+  background-color: LightGrey;
+`
+
 const NavMenu = ({ login }) => {
-  const menuStyle = {
-    padding: 5,
-    backgroundColor: 'LightGrey',
-  }
-
-  const menuItemStyle = {
-    paddingRight: 10,
-    display: 'inline'
-  }
-
   return (
-    <div style={menuStyle}>
-      <Link style={menuItemStyle} to="/">blogs</Link>
-      <Link style={menuItemStyle} to="/users">users</Link>
-      <div style={menuItemStyle}>{login.name} logged in <LogoutButton /></div>
-    </div>
+    <Menu>
+      <LinkMenuItem to="/">blogs</LinkMenuItem>
+      <LinkMenuItem to="/users">users</LinkMenuItem>
+      <MenuItem>{login.name} logged in <LogoutButton /></MenuItem>
+    </Menu>
   )
 }
 
