@@ -1,7 +1,17 @@
 import React, { useState, useRef } from 'react'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 import usePrevious from '../hooks/usePrevious'
-import './Notification.css'
+
+const StyledDiv = styled.div`
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  color: ${props => props.type === 'error' ? 'FireBrick' : 'Green'}
+`
 
 const Notification = ({ notification }) => {
   const [isVisible, setVisibility] = useState(false)
@@ -28,15 +38,10 @@ const Notification = ({ notification }) => {
 
   const { message, type } = notification
 
-  const styleTypes = {
-    info: 'notification-info',
-    error: 'notification-error'
-  }
-
   return (
-    <div className={`notification ${styleTypes[type]}`}>
+    <StyledDiv type={type}>
       {message}
-    </div>
+    </StyledDiv>
   )
 }
 
