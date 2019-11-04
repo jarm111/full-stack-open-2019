@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { addBlog } from '../reducers/blogReducer'
 import useField from '../hooks/useField'
+import Button from './Button'
 
 const AddBlogForm = ({ login, addBlog, onAddBlogSuccess }) => {
   const { reset: resetTitle, ...title } = useField('text')
@@ -40,7 +41,7 @@ const AddBlogForm = ({ login, addBlog, onAddBlogSuccess }) => {
         url 
         <input {...url} />
       </div>
-      <button type="submit">create</button>
+      <Button primary type="submit">create</Button>
     </form>
   )
 }

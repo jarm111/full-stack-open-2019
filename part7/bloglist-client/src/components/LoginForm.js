@@ -2,6 +2,7 @@ import React from 'react'
 import useField from '../hooks/useField'
 import { connect } from 'react-redux'
 import { login } from '../reducers/loginReducer'
+import Button from './Button'
 
 const LoginForm = ({ login }) => {
   const username = useField('text')
@@ -24,7 +25,7 @@ const LoginForm = ({ login }) => {
         password 
         <input {...password}/>
       </div>
-      <button type="submit">login</button>
+      <Button type="submit">login</Button>
     </form>
   )
 }

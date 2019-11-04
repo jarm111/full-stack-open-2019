@@ -5,11 +5,11 @@ import usePrevious from '../hooks/usePrevious'
 
 const StyledDiv = styled.div`
   background: lightgrey;
-  font-size: 20px;
-  border-style: solid;
+  font-size: 1.2em;
+  border: 0.2em solid ${props => props.type === 'error' ? 'FireBrick' : 'Green'};
   border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
+  padding: 1em;
+  text-align: center;
   color: ${props => props.type === 'error' ? 'FireBrick' : 'Green'}
 `
 

@@ -5,6 +5,7 @@ import {
   Switch,
   Route
 } from 'react-router-dom'
+import styled from 'styled-components'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
@@ -14,9 +15,15 @@ import Blog from './components/Blog'
 import Users from './components/Users'
 import User from './components/User'
 import NavMenu from './components/NavMenu'
+import GlobalStyle from './components/GlobalStyle'
 import { initBlogs } from './reducers/blogReducer'
 import { initUsers } from './reducers/userReducer'
 import { loginPersistent } from './reducers/loginReducer'
+
+const Container = styled.div`
+  margin: 0 auto;
+  width: 80%; 
+`
 
 const App = ({ login, initBlogs, initUsers, loginPersistent }) => {
   const blogFormToggleRef = useRef()
@@ -35,10 +42,10 @@ const App = ({ login, initBlogs, initUsers, loginPersistent }) => {
   }
 
   const showLoginForm = () => (
-    <div>
+    <Container>
       <h2>log in to application</h2>
       <LoginForm />
-    </div>
+    </Container>
   )
 
   const showBlogs = () => (
@@ -59,29 +66,32 @@ const App = ({ login, initBlogs, initUsers, loginPersistent }) => {
   )
 
   const showContent = () => (
-    <div>
+    <React.Fragment>
       <NavMenu />
-      <h2>blogs</h2>
-      <Switch>
-        <Route exact path="/">
-          {showBlogs()}
-        </Route>
-        <Route exact path="/users">
-          {showUsers()}
-        </Route>
-        <Route path="/users/:id">
-          <User />
-        </Route>
-        <Route path="/blogs/:id">
-          <Blog />
-        </Route>
-      </Switch>
-    </div>
+      <Container>
+        <h1>blogs</h1>
+        <Switch>
+          <Route exact path="/">
+            {showBlogs()}
+          </Route>
+          <Route exact path="/users">
+            {showUsers()}
+          </Route>
+          <Route path="/users/:id">
+            <User />
+          </Route>
+          <Route path="/blogs/:id">
+            <Blog />
+          </Route>
+        </Switch>
+      </Container>
+    </React.Fragment>
   )
 
   return (
     <div className="App">
       <Router>
+        <GlobalStyle />
         <Notification />
         {login ? showContent() : showLoginForm()}
       </Router>

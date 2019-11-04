@@ -5,15 +5,16 @@ import styled from 'styled-components'
 import LogoutButton from '../components/LogoutButton'
 
 const menuItemStyles = [
-  'padding-right: 10px; display: inline;'
+  'padding-right: 1em; display: inline; font-size: 1.2em'
 ]
 
 const LinkMenuItem = styled(Link)(menuItemStyles)
 const MenuItem = styled.div(menuItemStyles)
 
 const Menu = styled.div`
-  padding: 5px;
-  background-color: LightGrey;
+  padding: 1em 3em;
+  background-color: LightCoral;
+  margin-bottom: 1em;
 `
 
 const NavMenu = ({ login }) => {

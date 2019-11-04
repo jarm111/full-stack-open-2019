@@ -5,9 +5,10 @@ import styled from 'styled-components'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 
 const BlogContainer = styled.div`
-  padding: 5px;
+  padding: 0.6em;
   border: 1px solid;
-  margin-bottom: 5px;
+  margin-bottom: 0.5em;
+  border-radius: 3px;
 `
 
 const Blogs = ({ blogs }) => {

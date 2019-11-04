@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { addCommentToBlog } from '../reducers/blogReducer'
 import useField from '../hooks/useField'
+import Button from './Button'
 
 const CommentForm = ({ blog, addCommentToBlog }) => {
   const { reset: resetComment, ...comment } = useField('text')
@@ -21,7 +22,7 @@ const CommentForm = ({ blog, addCommentToBlog }) => {
     <form onSubmit={(event) => handleSubmit(event, comment.value)}>
       <div>
         <input {...comment}/>
-        <button type="submit">add comment</button>
+        <Button type="submit">add comment</Button>
       </div>
     </form>
   )
