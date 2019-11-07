@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = '/api/login'
+const baseUrl = `${BACKEND_URL}/api/login`
 
 export default {
   login: async function(user) {
