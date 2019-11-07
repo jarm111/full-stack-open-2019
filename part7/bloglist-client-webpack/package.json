@@ -1,0 +1,26 @@
+{
+  "name": "bloglist-client-webpack",
+  "version": "0.0.1",
+  "description": "Custom webpack config for bloglist client -- part7.16",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jarm111/full-stack-open-2019.git"
+  },
+  "keywords": [
+    "webpack"
+  ],
+  "author": "jarm111",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jarm111/full-stack-open-2019/issues"
+  },
+  "homepage": "https://github.com/jarm111/full-stack-open-2019#readme",
+  "devDependencies": {
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  }
+}
