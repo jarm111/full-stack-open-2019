@@ -19,7 +19,7 @@ const Blogs = ({ blogs }) => {
     <div>
       {sortedBlogs.map(blog => 
         <BlogContainer key={blog.id}>
-          <Link to={`${pathname}blogs/${blog.id}`}>{blog.title}</Link>
+          <Link to={`${pathname}blogs/${blog.id}`} data-cy="blog-link">{blog.title}</Link>
         </BlogContainer>
       )}
     </div>

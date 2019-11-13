@@ -31,15 +31,15 @@ const AddBlogForm = ({ login, addBlog, onAddBlogSuccess }) => {
     <form onSubmit={e => handleAddBlog(e, { title: title.value, author: author.value, url: url.value })}>
       <div>
         title 
-        <input {...title} />
+        <input {...title} name="title"/>
       </div>
       <div>
         author 
-        <input {...author} />
+        <input {...author} name="author"/>
       </div>
       <div>
         url 
-        <input {...url} />
+        <input {...url} name="url"/>
       </div>
       <Button primary type="submit">create</Button>
     </form>
