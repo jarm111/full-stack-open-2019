@@ -4,7 +4,7 @@ const backendUrl = Cypress.env('BACKEND_URL')
 
 beforeEach(function() {
   cy.fixture('user').as('user')
-  cy.fixture('newPost').as('newPost')
+  cy.fixture('newBlog').as('newBlog')
 })
 
 Cypress.Commands.add('resetDb', function() {
@@ -16,9 +16,7 @@ Cypress.Commands.add('seedUser', function() {
 })
 
 Cypress.Commands.add('login', function() {
-  cy.fixture('user').as('user')
   cy.visit('/')
-  cy.window().its('store').invoke('getState')
   cy
     .window()
     .its('store')
