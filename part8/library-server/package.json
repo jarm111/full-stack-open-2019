@@ -1,0 +1,33 @@
+{
+  "name": "library-server",
+  "version": "0.0.1",
+  "description": "Part 8 library  GraphQL server",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "nodemon index.js",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jarm111/full-stack-open-2019.git"
+  },
+  "keywords": [
+    "GraphQL"
+  ],
+  "author": "jarm111",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jarm111/full-stack-open-2019/issues"
+  },
+  "homepage": "https://github.com/jarm111/full-stack-open-2019#readme",
+  "dependencies": {
+    "apollo-server": "^2.9.11",
+    "graphql": "^14.5.8"
+  },
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "nodemon": "^2.0.0"
+  }
+}
