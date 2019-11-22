@@ -104,7 +104,7 @@ const typeDefs = gql`
     hello: String!
     bookCount: Int!
     authorCount: Int!
-    allBooks(author: String = ""): [Book!]!
+    allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
   }
 `
@@ -117,17 +117,12 @@ const resolvers = {
     hello: () => { return 'world ' + new Date },
     bookCount: () => books.length,
     authorCount: () => authors.length,
-    allBooks: (parent, args) => {
-      return args.author === '' ?
-        books
-        :
-        books.filter(book => args.author === book.author)
-    },
+    allBooks: (parent, args) => books
+      .filter(book => !args.author ? true : args.author === book.author)
+      .filter(book => !args.genre ? true : book.genres.some(genre => genre === args.genre)),
     allAuthors: () => authors
   }
 }
-
-console.log(books.filter(book => '' === book.author))
 
 const server = new ApolloServer({
   typeDefs,
