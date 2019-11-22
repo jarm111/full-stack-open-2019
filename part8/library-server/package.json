@@ -24,7 +24,8 @@
   "homepage": "https://github.com/jarm111/full-stack-open-2019#readme",
   "dependencies": {
     "apollo-server": "^2.9.11",
-    "graphql": "^14.5.8"
+    "graphql": "^14.5.8",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "eslint": "^6.6.0",
