@@ -3,8 +3,8 @@ import { useMutation } from '@apollo/react-hooks'
 import { SET_BIRTHYEAR } from '../graphql/mutations'
 import { GET_AUTHORS } from '../graphql/queries'
 
-const SetBirthyear = () => {
-  const [name, setName] = useState('')
+const SetBirthyear = ({ authors }) => {
+  const [name, setName] = useState(authors[0].name)
   const [born, setBorn] = useState('')
 
   const [setBirthYear] = useMutation(SET_BIRTHYEAR, {
@@ -12,15 +12,17 @@ const SetBirthyear = () => {
     refetchQueries: [{ query: GET_AUTHORS }],
   })
 
+  const handleSelect = ({ target }) => {
+    setName(target.value)
+  }
+
   const handleSubmit = async e => {
     e.preventDefault()
-    console.log('submit birthdate')
 
     await setBirthYear({
       variables: { name, setBornTo: parseInt(born) }
     })
 
-    setName('')
     setBorn('')
   }
 
@@ -28,13 +30,9 @@ const SetBirthyear = () => {
     <div>
       <h3>Set birthyear</h3>
       <form onSubmit={handleSubmit}>
-        <div>
-          name
-          <input 
-            value={name}
-            onChange={({ target }) => setName(target.value)}
-          />
-        </div>
+        <select value={name} onChange={handleSelect}>
+          {authors.map(author => (<option key={author.name} value={author.name}>{author.name}</option>))}
+        </select>
         <div>
           born
           <input 
