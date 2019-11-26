@@ -24,6 +24,7 @@
   "homepage": "https://github.com/jarm111/full-stack-open-2019#readme",
   "dependencies": {
     "apollo-server": "^2.9.11",
+    "dotenv": "^8.2.0",
     "graphql": "^14.5.8",
     "mongoose": "^5.7.12",
     "mongoose-unique-validator": "^2.0.3",
