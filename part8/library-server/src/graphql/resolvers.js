@@ -1,13 +1,10 @@
-// const uuid = require('uuid/v1')
 const Author = require('../models/author')
 const Book = require('../models/book')
-// let { authors, books } = require('../utils/mockData')
-
 
 module.exports = {
-  // Author: {
-  //   bookCount: parent => books.filter(book => parent.name === book.author).length
-  // },
+  Author: {
+    bookCount: parent => Book.find({ author: parent.id }).then(books => books.length)
+  },
   Mutation: {
     addBook: async (parent, args) => {
       let authorId
@@ -23,24 +20,23 @@ module.exports = {
       const savedBook = await book.save()
       return savedBook.populate('author').execPopulate()
     },
-    // editAuthor: (parent, args) => {
-    //   const author = authors.find(author => author.name === args.name)
-    //   if (!author) {
-    //     return null
-    //   }
-    //   const editedAuthor = { ...author, born: args.setBornTo }
-    //   authors = authors.map(author => author.id === editedAuthor.id ? editedAuthor : author)
-    //   return editedAuthor
-    // }
+    editAuthor: async (parent, args) => {
+      const author = await Author.findOneAndUpdate(
+        { name: args.name },
+        { born: args.setBornTo },
+        { new: true }
+      )
+      return author
+    }
   },
   Query: {
     hello: () => { return 'world ' + new Date },
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
-    allBooks: () => Book.find({}).populate('author'),
-    // allBooks: (parent, args) => Book.find({})
-    //   .filter(book => !args.author ? true : args.author === book.author)
-    //   .filter(book => !args.genre ? true : book.genres.some(genre => genre === args.genre)),
+    allBooks: (parent, args) => Book.find({}).populate('author').then(books => books
+      .filter(book => !args.author ? true : args.author === book.author.name)
+      .filter(book => !args.genre ? true : book.genres.some(genre => genre === args.genre))
+    ),
     allAuthors: () => Author.find({}),
   }
 }
