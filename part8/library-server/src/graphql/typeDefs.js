@@ -1,6 +1,11 @@
 const { gql } = require('apollo-server')
 
 module.exports = gql`
+  input AuthorInput {
+    name: String!
+    born: Int
+  }
+
   type Author {
     name: String!
     id: ID!
@@ -20,7 +25,7 @@ module.exports = gql`
     addBook(
       title: String!
       published: Int!
-      author: String!
+      author: AuthorInput!
       genres: [String!]!
     ): Book
     editAuthor(
