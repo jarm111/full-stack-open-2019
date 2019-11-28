@@ -21,6 +21,16 @@ module.exports = gql`
     genres: [String!]!
   }
 
+  type User {
+    username: String!
+    favoriteGenre: String!
+    id: ID!
+  }
+
+  type Token {
+    value: String!
+  }
+
   type Mutation {
     addBook(
       title: String!
@@ -28,10 +38,19 @@ module.exports = gql`
       author: AuthorInput!
       genres: [String!]!
     ): Book
+    createUser(
+      username: String!
+      favoriteGenre: String!
+      password: String!
+    ): User
     editAuthor(
       name: String!
       setBornTo: Int!
     ): Author
+    login(
+      username: String!
+      password: String!
+    ): Token
   }
 
   type Query {
@@ -40,5 +59,6 @@ module.exports = gql`
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+    me: User
   }
 `
