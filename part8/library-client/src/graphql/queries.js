@@ -14,7 +14,9 @@ export const GET_BOOKS = gql`
   {
     allBooks {
       title
-      author
+      author {
+        name
+      }
       published
     }
   }
