@@ -4,9 +4,9 @@ import { ADD_BOOK } from '../graphql/mutations'
 import { GET_AUTHORS } from '../graphql/queries'
 import { GET_BOOKS } from '../graphql/queries'
 
-const NewBook = (props) => {
+const NewBook = ({ show, onNewBook }) => {
   const [title, setTitle] = useState('')
-  const [author, setAuhtor] = useState('')
+  const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
@@ -16,7 +16,7 @@ const NewBook = (props) => {
     refetchQueries: [{ query: GET_AUTHORS }, { query: GET_BOOKS }],
   })
 
-  if (!props.show) {
+  if (!show) {
     return null
   }
 
@@ -29,9 +29,11 @@ const NewBook = (props) => {
 
     setTitle('')
     setPublished('')
-    setAuhtor('')
+    setAuthor('')
     setGenres([])
     setGenre('')
+
+    onNewBook()
   }
 
   const addGenre = () => {
@@ -53,7 +55,7 @@ const NewBook = (props) => {
           author
           <input
             value={author}
-            onChange={({ target }) => setAuhtor(target.value)}
+            onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
         <div>
