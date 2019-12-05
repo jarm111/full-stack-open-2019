@@ -22,3 +22,11 @@ export const GET_BOOKS = gql`
     }
   }
 `
+
+export const GET_FAVGENRE = gql`
+  {
+    me {
+      favoriteGenre
+    }
+  }
+`

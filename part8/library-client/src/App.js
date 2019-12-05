@@ -3,6 +3,7 @@ import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Login from './components/Login'
+import Recommend from './components/Recommend'
 import { useApolloClient } from '@apollo/react-hooks'
 import { readToken, clearStorage } from './utils/localStorage'
 
@@ -19,6 +20,7 @@ const App = () => {
     setToken(null)
     clearStorage()
     client.resetStore()
+    setPage('authors')
   }
 
   const handleLogin = () => {
@@ -35,6 +37,7 @@ const App = () => {
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         {token && <button onClick={() => setPage('add')}>add book</button>}
+        {token && <button onClick={() => setPage('recommend')}>recommend</button>}
         {!token && <button onClick={() => setPage('login')}>login</button>}
         {token && <button onClick={handleLogout}>logout</button>}
       </div>
@@ -59,6 +62,9 @@ const App = () => {
         onLogin={handleLogin}
       />
 
+      <Recommend 
+        show={page === 'recommend'}
+      />
     </div>
   )
 }
