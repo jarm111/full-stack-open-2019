@@ -3,11 +3,10 @@ import { useQuery } from '@apollo/react-hooks'
 import { GET_BOOKS } from '../graphql/queries'
 import BooksTable from './BooksTable'
 
-const Books = (props) => {
+const Books = () => {
   const [genreSelection, setGenreSelection] = useState('')
   const { data, loading, error } = useQuery(GET_BOOKS)
 
-  if (!props.show) return null
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error!</p>
 

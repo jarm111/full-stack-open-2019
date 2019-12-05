@@ -1,23 +1,14 @@
-import React, { useEffect } from 'react'
-import { useQuery, useLazyQuery } from '@apollo/react-hooks'
-import usePrevious from '../hooks/usePrevious'
+import React from 'react'
+import { useQuery } from '@apollo/react-hooks'
 import { GET_FAVGENRE } from '../graphql/queries'
 import { GET_BOOKS } from '../graphql/queries'
 import BooksTable from './BooksTable'
 
-const Recommend = ({ show }) => {
-  const [getFavGenre, favGenreQuery] = useLazyQuery(GET_FAVGENRE, { fetchPolicy: 'no-cache' })
+const Recommend = () => {
+  const favGenreQuery = useQuery(GET_FAVGENRE)
   const booksQuery = useQuery(GET_BOOKS)
-  const prevShow = usePrevious(show)
-
-  useEffect(() => {
-    if (show && !prevShow) {
-      getFavGenre()
-    }
-  })
   
-  if (!show) return null
-  if (!favGenreQuery.called || favGenreQuery.loading || booksQuery.loading || !favGenreQuery.data.me) return <p>Loading...</p>
+  if (favGenreQuery.loading || booksQuery.loading) return <p>Loading...</p>
   if (favGenreQuery.error || booksQuery.error) return <p>Error!</p>
 
   const { favoriteGenre } = favGenreQuery.data.me
@@ -32,6 +23,5 @@ const Recommend = ({ show }) => {
     </div>
   )
 }
-
 
 export default Recommend

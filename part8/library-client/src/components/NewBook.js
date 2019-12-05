@@ -4,7 +4,7 @@ import { ADD_BOOK } from '../graphql/mutations'
 import { GET_AUTHORS } from '../graphql/queries'
 import { GET_BOOKS } from '../graphql/queries'
 
-const NewBook = ({ show, onNewBook }) => {
+const NewBook = ({ onNewBook }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
@@ -15,10 +15,6 @@ const NewBook = ({ show, onNewBook }) => {
     // onError: handleError,
     refetchQueries: [{ query: GET_AUTHORS }, { query: GET_BOOKS }],
   })
-
-  if (!show) {
-    return null
-  }
 
   const submit = async (e) => {
     e.preventDefault()

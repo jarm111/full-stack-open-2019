@@ -3,15 +3,11 @@ import { useMutation } from '@apollo/react-hooks'
 import { LOGIN } from '../graphql/mutations'
 import { saveToken } from '../utils/localStorage'
 
-const Login = ({ show, setToken, onLogin }) => {
+const Login = ({ setToken, onLogin }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   const [login] = useMutation(LOGIN)
-
-  if (!show) {
-    return null
-  }
 
   const handleSubmit = async e => {
     e.preventDefault()

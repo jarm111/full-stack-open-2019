@@ -31,6 +31,8 @@ const App = () => {
     setPage('books')
   }
 
+  const isPage = what => what === page
+
   return (
     <div>
       <div>
@@ -42,29 +44,22 @@ const App = () => {
         {token && <button onClick={handleLogout}>logout</button>}
       </div>
 
-      <Authors
-        show={page === 'authors'}
+      {isPage('authors') && <Authors
         isAuthenticated={token !== null}
-      />
+      />}
 
-      <Books
-        show={page === 'books'}
-      />
+      {isPage('books') && <Books/>}
 
-      <NewBook
-        show={page === 'add'}
+      {isPage('add') && <NewBook
         onNewBook={handleNewBook}
-      />
+      />}
 
-      <Login
-        show={page === 'login'}
+      {isPage('login') && <Login
         setToken={setToken}
         onLogin={handleLogin}
-      />
+      />}
 
-      <Recommend 
-        show={page === 'recommend'}
-      />
+      {isPage('recommend') && <Recommend/>}
     </div>
   )
 }

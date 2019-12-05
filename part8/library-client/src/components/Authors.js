@@ -3,10 +3,9 @@ import { useQuery } from '@apollo/react-hooks'
 import { GET_AUTHORS } from '../graphql/queries'
 import SetBirthyear from './SetBirthyear'
 
-const Authors = ({ show, isAuthenticated }) => {
+const Authors = ({ isAuthenticated }) => {
   const { data, loading, error } = useQuery(GET_AUTHORS)
 
-  if (!show) return null
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error!</p>
 
