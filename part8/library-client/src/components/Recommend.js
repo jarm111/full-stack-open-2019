@@ -1,19 +1,31 @@
 import React from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { GET_FAVGENRE } from '../graphql/queries'
-import { GET_BOOKS } from '../graphql/queries'
+import { GET_BOOKS_BY_GENRE } from '../graphql/queries'
 import BooksTable from './BooksTable'
 
 const Recommend = () => {
-  const favGenreQuery = useQuery(GET_FAVGENRE)
-  const booksQuery = useQuery(GET_BOOKS)
+  const { 
+    data: { 
+      me: { favoriteGenre } = {} 
+    } = {}, 
+    ...favGenreQuery 
+  } = useQuery(GET_FAVGENRE)
+
+  const skip = favoriteGenre === undefined
+  const variables = {
+    genre: favoriteGenre
+  }
+
+  const { 
+    data: { 
+      allBooks: recommendedBooks = [] 
+    } = {}, 
+    ...booksQuery 
+  } = useQuery(GET_BOOKS_BY_GENRE, { skip, variables })
   
   if (favGenreQuery.loading || booksQuery.loading) return <p>Loading...</p>
   if (favGenreQuery.error || booksQuery.error) return <p>Error!</p>
-
-  const { favoriteGenre } = favGenreQuery.data.me
-  const { allBooks } = booksQuery.data
-  const recommendedBooks = allBooks.filter(book => book.genres.includes(favoriteGenre))
 
   return (
     <div>
