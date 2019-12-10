@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost'
+import gql from 'graphql-tag'
 
 export const ADD_BOOK = gql`
   mutation AddBook($title: String!, $author: String!, $published: Int!, $genres: [String!]!) {
