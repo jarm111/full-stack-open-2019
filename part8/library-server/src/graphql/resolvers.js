@@ -1,4 +1,5 @@
-const { UserInputError } = require('apollo-server')
+const { UserInputError, PubSub } = require('apollo-server')
+const pubsub = new PubSub()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
@@ -26,7 +27,9 @@ const addBook = async (parent, args, context) => {
   const book = new Book({ ...args, author: authorId })
   try {
     const savedBook = await book.save()
-    return savedBook.populate('author').execPopulate()
+    const populatedBook = savedBook.populate('author').execPopulate()
+    pubsub.publish('BOOK_ADDED', { bookAdded: populatedBook })
+    return populatedBook
   } catch(error) {
     throw new UserInputError(error.message, { invalidArgs: args })
   }
@@ -104,5 +107,10 @@ module.exports = {
     allBooks,
     allAuthors: () => Author.find({}),
     me: (parent, args, context) => context.currentUser
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(['BOOK_ADDED'])
+    }
   }
 }
