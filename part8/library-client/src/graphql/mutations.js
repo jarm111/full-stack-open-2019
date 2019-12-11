@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { BOOK_DETAILS } from './fragments'
 
 export const ADD_BOOK = gql`
   mutation AddBook($title: String!, $author: String!, $published: Int!, $genres: [String!]!) {
@@ -10,14 +11,10 @@ export const ADD_BOOK = gql`
       published: $published,
       genres: $genres
     ) {
-      title
-      author {
-        name
-      }
-      published
-      genres
+      ...BookDetails
     }
   }
+  ${BOOK_DETAILS}
 `
 export const SET_BIRTHYEAR = gql`
   mutation setBirthYear($name: String!, $setBornTo: Int!) {

@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { BOOK_DETAILS } from './fragments'
 
 export const GET_AUTHORS = gql`
   {
@@ -13,15 +14,12 @@ export const GET_AUTHORS = gql`
 export const GET_BOOKS = gql`
   {
     allBooks {
-      title
-      author {
-        name
-      }
-      published
-      genres
+      ...BookDetails
     }
   }
+  ${BOOK_DETAILS}
 `
+
 
 export const GET_FAVGENRE = gql`
   {
@@ -34,12 +32,8 @@ export const GET_FAVGENRE = gql`
 export const GET_BOOKS_BY_GENRE = gql`
   query AllBooks($genre: String!) {
     allBooks(genre: $genre) {
-      title
-      author {
-        name
-      }
-      published
-      genres
+      ...BookDetails
     }
   }
+  ${BOOK_DETAILS}
 `
