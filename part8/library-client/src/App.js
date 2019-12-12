@@ -7,6 +7,7 @@ import NewBook from './components/NewBook'
 import Login from './components/Login'
 import Recommend from './components/Recommend'
 import { BOOK_ADDED } from './graphql/subscriptions'
+import { addBookToCache } from './utils/cacheUpdate'
 
 const App = () => {
   const [page, setPage] = useState('authors')
@@ -16,6 +17,7 @@ const App = () => {
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData: { data: { bookAdded } } }) => {
       window.alert(`New book ${bookAdded.title} added!`)
+      addBookToCache(client, bookAdded)
     }
   })
 

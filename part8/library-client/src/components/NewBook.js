@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import { useMutation } from '@apollo/react-hooks'
 import { ADD_BOOK } from '../graphql/mutations'
 import { GET_AUTHORS } from '../graphql/queries'
-import { GET_BOOKS } from '../graphql/queries'
-import { GET_BOOKS_BY_GENRE } from '../graphql/queries'
+import { addBookToCache } from '../utils/cacheUpdate'
 
 const NewBook = ({ onNewBook }) => {
   const [title, setTitle] = useState('')
@@ -14,17 +13,10 @@ const NewBook = ({ onNewBook }) => {
 
   const [addBook] = useMutation(ADD_BOOK, {
     // onError: handleError,
-    refetchQueries: [{ query: GET_AUTHORS }, { query: GET_BOOKS }],
-    update: (store, response) => {
-      response.data.addBook.genres.forEach(genre => {
-        const dataInStore = store.readQuery({ query: GET_BOOKS_BY_GENRE, variables: { genre } })
-        dataInStore.allBooks = dataInStore.allBooks.concat(response.data.addBook)
-        store.writeQuery({ 
-          query: GET_BOOKS_BY_GENRE, 
-          variables: { genre },
-          data: dataInStore
-        })
-      })
+    refetchQueries: [{ query: GET_AUTHORS }],
+    update: (client, response) => {
+      const newBook = response.data.addBook
+      addBookToCache(client, newBook)
     }
   })
 
