@@ -92,7 +92,10 @@ const login = async (parent, args) => {
 
 module.exports = {
   Author: {
-    bookCount: parent => Book.find({ author: parent.id }).then(books => books.length)
+    bookCount: async (parent, args, { loaders }) => {
+      const books = await loaders.batchBooksByAuthor.load(parent.id)
+      return books.length
+    }
   },
   Mutation: {
     addBook,
